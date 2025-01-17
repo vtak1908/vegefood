@@ -5,8 +5,11 @@ session_start();
 if (isset($_SESSION['user'])) {
   $count = $get_data->count_Cart($_SESSION['user']);
 }else{
-  echo "<script>alert('Bạn cần đăng nhập để thực hiện thao tác này');
-    window.location = 'sign-in.php';</script>";
+  if(isset($_SESSION['cart'])){
+    $count = count($_SESSION['cart']);
+  }else{
+    $count = '0';
+  }
 }
  ?>
 <!DOCTYPE html>
@@ -57,13 +60,10 @@ if (isset($_SESSION['user'])) {
               	<a class="dropdown-item" href="wishlist.php">Danh sách yêu thích</a>
               </div>
             </li>
-	          <li class="nav-item"><a href="about.php" class="nav-link">About</a></li>
+	          <li class="nav-item"><a href="about.php" class="nav-link">Về chúng tôi</a></li>
 	          <li class="nav-item"><a href="blog.php" class="nav-link">Tin tức</a></li>
 	          <li class="nav-item"><a href="contact.php" class="nav-link">Liên hệ</a></li>
-	          <li class="nav-item cta cta-colored"><a href="cart.php" class="nav-link"><span class="icon-shopping_cart"></span>[<?php if (isset($_SESSION["user"])) {
-              echo $count;
-            } else
-              echo '0'; ?>]</a></li>
+	          <li class="nav-item cta cta-colored"><a href="cart.php" class="nav-link"><span class="icon-shopping_cart"></span>[<?php echo $count;?>]</a></li>
             <li class="nav-item dropdown">
               <?php if (isset($_SESSION["user"])) {
               ?>
@@ -89,30 +89,121 @@ if (isset($_SESSION['user'])) {
 
 if(isset($_GET['del'])){
     $id_pro = $_GET['del'];
-    $delete = $get_data->delete_Cart($id_pro,$_SESSION['user']);
+  if (isset($_SESSION['user'])) {
+    $delete = $get_data->delete_Cart($id_pro, $_SESSION['user']);
+  } else {
+    $product = []; // Khởi tạo mảng $product trước khi sử dụng
+    
+    foreach($_SESSION['cart'] as $cart_Item){
+        if($cart_Item['id_pro'] != $id_pro ){
+                 $product[] = array(
+                    'id_pro' => $cart_Item['id_pro'],
+                    'name' => $cart_Item['name'],
+                    'quantity' => $cart_Item['quantity'],
+                    'picture' => $cart_Item['picture'],
+                    'price' => $cart_Item['price'],
+                    'total' => $cart_Item['price']*$cart_Item['quantity']
+                );
+        }
+    }
+    
+    unset($_SESSION['cart']);
+    
+    $_SESSION['cart'] = $product;
+  }
 }
 ?>
 
 <?php
 if(isset($_GET['minus'])){
     $id_pro = $_GET['minus'];
-    $select_cart_item = $get_data->select_cart_item($id_pro,$_SESSION['user']);
-  foreach ($select_cart_item as $item) {
-    $newQuantity = $item['quantity_order'] - 1;
-    if ($newQuantity > 0) {
-      $update = $get_data->update_cart_item($id_pro, $newQuantity, $item['price'] * $newQuantity, $_SESSION['user']);
-    }else {
-      $delete = $get_data->delete_Cart($id_pro,$_SESSION['user']);
+  if (isset($_SESSION['user'])) {
+    $select_cart_item = $get_data->select_cart_item($id_pro, $_SESSION['user']);
+    foreach ($select_cart_item as $item) {
+      $newQuantity = $item['quantity_order'] - 1;
+      if ($newQuantity > 0) {
+        $update = $get_data->update_cart_item($id_pro, $newQuantity, $item['price'] * $newQuantity, $_SESSION['user']);
+      } else {
+        $delete = $get_data->delete_Cart($id_pro, $_SESSION['user']);
+      }
     }
+  }else {
+    $product = []; // Khởi tạo mảng $product trước khi sử dụng
+    
+    foreach($_SESSION['cart'] as $cart_Item){
+        if($cart_Item['id_pro'] != $id_pro ){
+                 $product[] = array(
+                    'id_pro' => $cart_Item['id_pro'],
+                    'name' => $cart_Item['name'],
+                    'quantity' => $cart_Item['quantity'],
+                    'picture' => $cart_Item['picture'],
+                    'price' => $cart_Item['price'],
+                    'total' => $cart_Item['price']*$cart_Item['quantity']
+                );
+        }
+                else{
+                  $newQuantity =$cart_Item['quantity']-1;
+        if ($newQuantity > 0) {
+          $product[] = array(
+            'id_pro' => $cart_Item['id_pro'],
+            'name' => $cart_Item['name'],
+            'quantity' => $newQuantity,
+            'picture' => $cart_Item['picture'],
+            'price' => $cart_Item['price'],
+            'total' => $cart_Item['price'] * $newQuantity
+          );
+        } else {
+          echo "<script>window.location=('cart.php?id_pro=".$cart_Item['id_pro']."')</script";
+        }
+        }
+    }
+    
+    unset($_SESSION['cart']);
+    
+    $_SESSION['cart'] = $product;
   }
 }
-if(isset($_GET['plus'])){
-    $id_pro = $_GET['plus'];
-    $select_cart_item = $get_data->select_cart_item($id_pro,$_SESSION['user']);
-    foreach($select_cart_item as $item){
-      $newQuantity =$item['quantity_order']+1;
-      $update = $get_data->update_cart_item($id_pro,$newQuantity,$item['price']*$newQuantity,$_SESSION['user']);
+if (isset($_GET['plus'])) {
+  $id_pro = $_GET['plus'];
+  if (isset($_SESSION['user'])) {
+    $select_cart_item = $get_data->select_cart_item($id_pro, $_SESSION['user']);
+    foreach ($select_cart_item as $item) {
+      $newQuantity = $item['quantity_order'] + 1;
+      $update = $get_data->update_cart_item($id_pro, $newQuantity, $item['price'] * $newQuantity, $_SESSION['user']);
     }
+  }else {
+    $product = []; // Khởi tạo mảng $product trước khi sử dụng
+    
+    foreach($_SESSION['cart'] as $cart_Item){
+        if($cart_Item['id_pro'] != $id_pro){
+                 $product[] = array(
+                    'id_pro' => $cart_Item['id_pro'],
+                    'name' => $cart_Item['name'],
+                    'quantity' => $cart_Item['quantity'],
+                    'picture' => $cart_Item['picture'],
+                    'price' => $cart_Item['price'],
+                    'total' => $cart_Item['price']*$cart_Item['quantity']
+                );
+        }
+        else{
+          $newQuantity =$cart_Item['quantity']+1;
+                 $product[] = array(
+                    'id_pro' => $cart_Item['id_pro'],
+                    'name' => $cart_Item['name'],
+                    'quantity' => $newQuantity,
+                    'picture' => $cart_Item['picture'],
+                    'price' => $cart_Item['price'],
+                    'total' => $cart_Item['price']*($newQuantity)
+                );
+        }
+    }
+    
+    // Xóa $_SESSION['cart'] hiện tại
+    unset($_SESSION['cart']);
+    
+    // Cập nhật $_SESSION['cart'] với mảng $product mới
+    $_SESSION['cart'] = $product;
+  }
 }
 ?>
 <script>
@@ -135,7 +226,7 @@ if(isset($_GET['plus'])){
       <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index.php">Home</a></span> <span>Cart</span></p>
+          	<p class="breadcrumbs"><span class="mr-2"><a href="index.php">Trang chủ</a></span> <span>Giỏ hàng</span></p>
             <h1 class="mb-0 bread">Giỏ hàng</h1>
           </div>
         </div>
@@ -160,12 +251,13 @@ if(isset($_GET['plus'])){
 						    </thead>
 						    <tbody>
 							<?php
-							$select_cart = $get_data->select_Cart($_SESSION['user']);
-							if (mysqli_num_rows($select_cart) ) {
-								foreach ($select_cart as $se_cart):
-							?>
+              if (isset($_SESSION['user'])) {
+                $select_cart = $get_data->select_Cart($_SESSION['user']);
+                if (mysqli_num_rows($select_cart)) {
+                  foreach ($select_cart as $se_cart):
+                    ?>
 						      <tr class="text-center">
-						        <td class="product-remove"><a href="cart.php?del=<?php echo $se_cart['id_pro']?>"><span class="bi bi-trash">x</span></a></td>
+						        <td class="product-remove"><a href="cart.php?del=<?php echo $se_cart['id_pro'] ?>"><span class="bi bi-trash">x</span></a></td>
 						        
 						        <td class="image-prod"><div class="img" style="background-image: url('../Admin/upload/<?php echo ($se_cart['picture']); ?>');"></div></td>
 						        
@@ -173,34 +265,66 @@ if(isset($_GET['plus'])){
 						        	<h3><?php echo $se_cart['name_pro'] ?></h3>
 						        </td>
 						        
-						        <td class="price"><?php $price = $se_cart['price']; 
-                            $formatted_price = number_format($price, 0, ',', '.'); 
-                            echo $formatted_price . ' ₫' ?></td>
+						        <td class="price"><?php $price = $se_cart['price'];
+                    $formatted_price = number_format($price, 0, ',', '.');
+                    echo $formatted_price . ' ₫' ?></td>
 						        
 						        <td class="quantity">
 						    <div class="d-flex align-items-center">
-                            <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" data-action="minus"><a href="cart.php?minus=<?php echo $se_cart['id_pro']?>"><i class="ion-ios-remove"></i></a></button>
+                            <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" data-action="minus"><a href="cart.php?minus=<?php echo $se_cart['id_pro'] ?>"><i class="ion-ios-remove"></i></a></button>
                             <input name="quantity[<?php echo $se_cart['id_pro']; ?>]" value="<?php echo $se_cart['quantity_order'] ?>" type="number" class="form-control input-number">
-                            <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" data-action="plus"><a href="cart.php?plus=<?php echo $se_cart['id_pro']?>"><i class="ion-ios-add"></a></i></button>
+                            <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" data-action="plus"><a href="cart.php?plus=<?php echo $se_cart['id_pro'] ?>"><i class="ion-ios-add"></a></i></button>
                         </div>
 					          </td>
 						        
-						        <td class="total"><?php $price = $se_cart['total']; 
-                            $formatted_price = number_format($price, 0, ',', '.'); 
-                            echo $formatted_price . ' ₫' ?></td>
+						        <td class="total"><?php $price = $se_cart['total'];
+                    $formatted_price = number_format($price, 0, ',', '.');
+                    echo $formatted_price . ' ₫' ?></td>
 						      </tr><!-- END TR-->
-									<?php 
-									endforeach;
-								} else {
-									echo 'Khong co san pham nao trong gio hang';
-								}
+									<?php
+                  endforeach;
+                }
+              } else if(isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
+									foreach ($_SESSION['cart'] as $se_cart):
+                    ?>
+						      <tr class="text-center">
+						        <td class="product-remove"><a href="cart.php?del=<?php echo $se_cart['id_pro'] ?>"><span class="bi bi-trash">x</span></a></td>
+						        
+						        <td class="image-prod"><div class="img" style="background-image: url('../Admin/upload/<?php echo ($se_cart['picture']); ?>');"></div></td>
+						        
+						        <td class="product-name">
+						        	<h3><?php echo $se_cart['name'] ?></h3>
+						        </td>
+						        
+						        <td class="price"><?php $price = $se_cart['price'];
+                    $formatted_price = number_format($price, 0, ',', '.');
+                    echo $formatted_price . ' ₫' ?></td>
+						        
+						        <td class="quantity">
+						    <div class="d-flex align-items-center">
+                            <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" data-action="minus"><a href="cart.php?minus=<?php echo $se_cart['id_pro'] ?>"><i class="ion-ios-remove"></i></a></button>
+                            <input name="quantity[<?php echo $se_cart['id_pro']; ?>]" value="<?php echo $se_cart['quantity'] ?>" type="number" class="form-control input-number">
+                            <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" data-action="plus"><a href="cart.php?plus=<?php echo $se_cart['id_pro'] ?>"><i class="ion-ios-add"></a></i></button>
+                        </div>
+					          </td>
+						        
+						        <td class="total"><?php $price = $se_cart['total'];
+                    $formatted_price = number_format($price, 0, ',', '.');
+                    echo $formatted_price . ' ₫' ?></td>
+						      </tr><!-- END TR-->
+									<?php
+                  endforeach;
+								}else{
+                  echo 'Không có sản phẩm nào trong giỏ hàng';
+                }
 								?>
 						    </tbody>
 						  </table>
 					  </div>
     			</div>
     		</div>
-        <?php if (mysqli_num_rows($select_cart) ) { ?>
+        <?php if(isset($_SESSION['user'])){
+        if (mysqli_num_rows($select_cart) ) { ?>
     		<div class="row justify-content-end">
 
     			<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
@@ -232,24 +356,51 @@ if(isset($_GET['plus'])){
     				<p><a href="checkout.php" class="btn btn-primary py-3 px-4">Thanh toán</a></p>
     			</div>
     		</div>
+        <?php }
+        } else if (isset($_SESSION['cart'])) {
+          ?>
+        <div class="row justify-content-end">
+
+    			<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
+    				<div class="cart-total mb-3">
+    					<h3>Tổng số giỏ hàng</h3>
+    					<p class="d-flex">
+    						<span>Tổng phụ</span>
+    						<span><?php $subTotal = 0;
+                foreach ($_SESSION['cart'] as $se_cart) {
+                  $subTotal = $subTotal + $se_cart['total'];
+                }
+                $formatted_price = number_format($subTotal, 0, ',', '.');
+                echo $formatted_price . ' ₫'; ?></span>
+    					</p>
+    					<p class="d-flex">
+    						<span>Vận chuyển</span>
+    						<span><?php $Discount = 30000;
+                $formatted_price = number_format($Discount, 0, ',', '.');
+                echo $formatted_price . ' ₫' ?></span>
+    					</p>
+    					<hr>
+    					<p class="d-flex total-price">
+    						<span>Tổng</span>
+    						<span><?php $total = $subTotal + $Discount;
+                $formatted_price = number_format($total, 0, ',', '.');
+                echo $formatted_price . ' ₫' ?></span>
+    					</p>
+    				</div>
+    				<p><a href="checkout.php" class="btn btn-primary py-3 px-4">Thanh toán</a></p>
+    			</div>
+    		</div>
         <?php } ?>
 			</div>
 		</section>
 
     <footer class="ftco-footer ftco-section">
       <div class="container">
-      	<div class="row">
-      		<div class="mouse">
-						<a href="#" class="mouse-icon">
-							<div class="mouse-wheel"><span class="ion-ios-arrow-up"></span></div>
-						</a>
-					</div>
-      	</div>
         <div class="row mb-5">
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
               <h2 class="ftco-heading-2">Vegefoods</h2>
-              <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.</p>
+              <p>Sản phẩm tươi sạch</p>
               <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
                 <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
                 <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
@@ -259,35 +410,32 @@ if(isset($_GET['plus'])){
           </div>
           <div class="col-md">
             <div class="ftco-footer-widget mb-4 ml-md-5">
-              <h2 class="ftco-heading-2">Menu</h2>
+              <h2 class="ftco-heading-2">Danh mục</h2>
               <ul class="list-unstyled">
-                <li><a href="#" class="py-2 d-block">Shop</a></li>
-                <li><a href="#" class="py-2 d-block">About</a></li>
-                <li><a href="#" class="py-2 d-block">Journal</a></li>
-                <li><a href="#" class="py-2 d-block">Contact Us</a></li>
+                <li><a href="shop.php" class="py-2 d-block">Cửa hàng</a></li>
+                <li><a href="about.php" class="py-2 d-block">Về chúng tôi</a></li>
+                <li><a href="blog.php" class="py-2 d-block">Tin tức</a></li>
+                <li><a href="contact.php" class="py-2 d-block">Liên hệ</a></li>
               </ul>
             </div>
           </div>
           <div class="col-md-4">
              <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Help</h2>
+              <h2 class="ftco-heading-2">Hỗ trợ</h2>
               <div class="d-flex">
 	              <ul class="list-unstyled mr-l-5 pr-l-3 mr-4">
-	                <li><a href="#" class="py-2 d-block">Shipping Information</a></li>
-	                <li><a href="#" class="py-2 d-block">Returns &amp; Exchange</a></li>
-	                <li><a href="#" class="py-2 d-block">Terms &amp; Conditions</a></li>
-	                <li><a href="#" class="py-2 d-block">Privacy Policy</a></li>
+	                <li><a href="#" class="py-2 d-block">Thông tin vận chuyển</a></li>
+	                <li><a href="#" class="py-2 d-block">Trả hàng &amp; Hoàn tiền</a></li>
+	                <li><a href="#" class="py-2 d-block">Điểu khoản &amp; Quy định</a></li>
+	                <li><a href="#" class="py-2 d-block">Chính sách bảo mật</a></li>
 	              </ul>
-	              <ul class="list-unstyled">
-	                <li><a href="#" class="py-2 d-block">FAQs</a></li>
-	                <li><a href="#" class="py-2 d-block">Contact</a></li>
-	              </ul>
+	           
 	            </div>
             </div>
           </div>
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
-            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<h2 class="ftco-heading-2">Bạn có thắc mắc?</h2>
             	<div class="block-23 mb-3">
 	              <ul>
 	                <li><span class="icon icon-map-marker"></span><span class="text">218, Minh Khai, Hai Bà Trưng, Hà Nội</span></li>

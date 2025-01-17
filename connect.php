@@ -1,8 +1,8 @@
 <?php
-$server = "localhost";
-$user = "root";
-$pass = "";
-$database = "vegefood";
+$server = "sql306.infinityfree.com";
+$user = "if0_36967704";
+$pass = "Kiet19082003";
+$database = "if0_36967704_vegefood";
 $conn = mysqli_connect($server, $user, $pass, $database);
 
 

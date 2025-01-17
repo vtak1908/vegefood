@@ -4,13 +4,18 @@ session_start();
           $get_data = new data_user();
 if (isset($_SESSION['user'])) {
   $count = $get_data->count_Cart($_SESSION['user']);
+}else{
+  if(isset($_SESSION['cart'])){
+    $count = count($_SESSION['cart']);
+  }else{
+    $count = '0';
+  }
 }
  ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Vegefoods</title>
-    <style>
+     <style>
       .img-prod img {
     width: 100%;
     height: auto;
@@ -41,6 +46,7 @@ if (isset($_SESSION['user'])) {
 }
 
     </style>
+    <title>Vegefoods</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
@@ -77,21 +83,18 @@ if (isset($_SESSION['user'])) {
 
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
-	          <li class="nav-item "><a href="index.php" class="nav-link">Trang chủ</a></li>
+	          <li class="nav-item"><a href="index.php" class="nav-link">Trang chủ</a></li>
 	          <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle active" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cửa hàng</a>
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cửa hàng</a>
               <div class="dropdown-menu" aria-labelledby="dropdown04">
               	<a class="dropdown-item" href="shop.php">Cửa hàng</a>
               	<a class="dropdown-item" href="wishlist.php">Danh sách yêu thích</a>
               </div>
             </li>
-	          <li class="nav-item"><a href="about.php" class="nav-link">About</a></li>
+	          <li class="nav-item"><a href="about.php" class="nav-link">Về chúng tôi</a></li>
 	          <li class="nav-item"><a href="blog.php" class="nav-link">Tin tức</a></li>
 	          <li class="nav-item"><a href="contact.php" class="nav-link">Liên hệ</a></li>
-	          <li class="nav-item cta cta-colored"><a href="cart.php" class="nav-link"><span class="icon-shopping_cart"></span>[<?php if (isset($_SESSION["user"])) {
-              echo $count;
-            } else
-              echo '0'; ?>]</a></li>
+	          <li class="nav-item cta cta-colored"><a href="cart.php" class="nav-link"><span class="icon-shopping_cart"></span>[<?php echo $count;?>]</a></li>
             <li class="nav-item dropdown">
               <?php if (isset($_SESSION["user"])) {
               ?>
@@ -101,7 +104,7 @@ if (isset($_SESSION['user'])) {
               	<a class="dropdown-item" href="logout.php">Đăng xuất</a>
               </div>
               <?php } else { ?>
-              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tàu khoản</a>
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tài khoản</a>
               <div class="dropdown-menu" aria-labelledby="dropdown04">
               	<a class="dropdown-item" href="sign-up.php">Đăng ký</a>
               	<a class="dropdown-item" href="sign-in.php">Đăng nhập</a>
@@ -208,9 +211,7 @@ if (isset($_SESSION['user'])) {
 	    							<a href="product-single.php?id_pro=<?php echo $pro['id_pro'] ?>" class="add-to-cart d-flex justify-content-center align-items-center text-center">
 	    								<span><i class="ion-ios-menu"></i></span>
 	    							</a>
-	    							<a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-	    								<span><i class="ion-ios-cart"></i></span>
-	    							</a>
+                    &nbsp;
 	    							<a href="#" class="heart d-flex justify-content-center align-items-center ">
 	    								<span><i class="ion-ios-heart"></i></span>
 	    							</a>
@@ -227,18 +228,11 @@ if (isset($_SESSION['user'])) {
 
     <footer class="ftco-footer ftco-section">
       <div class="container">
-      	<div class="row">
-      		<div class="mouse">
-						<a href="#" class="mouse-icon">
-							<div class="mouse-wheel"><span class="ion-ios-arrow-up"></span></div>
-						</a>
-					</div>
-      	</div>
         <div class="row mb-5">
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
               <h2 class="ftco-heading-2">Vegefoods</h2>
-              <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.</p>
+              <p>Sản phẩm tươi sạch</p>
               <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
                 <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
                 <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
@@ -248,35 +242,32 @@ if (isset($_SESSION['user'])) {
           </div>
           <div class="col-md">
             <div class="ftco-footer-widget mb-4 ml-md-5">
-              <h2 class="ftco-heading-2">Menu</h2>
+              <h2 class="ftco-heading-2">Danh mục</h2>
               <ul class="list-unstyled">
-                <li><a href="#" class="py-2 d-block">Shop</a></li>
-                <li><a href="#" class="py-2 d-block">About</a></li>
-                <li><a href="#" class="py-2 d-block">Journal</a></li>
-                <li><a href="#" class="py-2 d-block">Contact Us</a></li>
+                <li><a href="shop.php" class="py-2 d-block">Cửa hàng</a></li>
+                <li><a href="about.php" class="py-2 d-block">Về chúng tôi</a></li>
+                <li><a href="blog.php" class="py-2 d-block">Tin tức</a></li>
+                <li><a href="contact.php" class="py-2 d-block">Liên hệ</a></li>
               </ul>
             </div>
           </div>
           <div class="col-md-4">
              <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Help</h2>
+              <h2 class="ftco-heading-2">Hỗ trợ</h2>
               <div class="d-flex">
 	              <ul class="list-unstyled mr-l-5 pr-l-3 mr-4">
-	                <li><a href="#" class="py-2 d-block">Shipping Information</a></li>
-	                <li><a href="#" class="py-2 d-block">Returns &amp; Exchange</a></li>
-	                <li><a href="#" class="py-2 d-block">Terms &amp; Conditions</a></li>
-	                <li><a href="#" class="py-2 d-block">Privacy Policy</a></li>
+	                <li><a href="#" class="py-2 d-block">Thông tin vận chuyển</a></li>
+	                <li><a href="#" class="py-2 d-block">Trả hàng &amp; Hoàn tiền</a></li>
+	                <li><a href="#" class="py-2 d-block">Điểu khoản &amp; Quy định</a></li>
+	                <li><a href="#" class="py-2 d-block">Chính sách bảo mật</a></li>
 	              </ul>
-	              <ul class="list-unstyled">
-	                <li><a href="#" class="py-2 d-block">FAQs</a></li>
-	                <li><a href="#" class="py-2 d-block">Contact</a></li>
-	              </ul>
+	           
 	            </div>
             </div>
           </div>
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
-            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<h2 class="ftco-heading-2">Bạn có thắc mắc?</h2>
             	<div class="block-23 mb-3">
 	              <ul>
 	                <li><span class="icon icon-map-marker"></span><span class="text">218, Minh Khai, Hai Bà Trưng, Hà Nội</span></li>

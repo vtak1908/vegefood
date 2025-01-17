@@ -4,13 +4,18 @@ session_start();
           $get_data = new data_user();
 if (isset($_SESSION['user'])) {
   $count = $get_data->count_Cart($_SESSION['user']);
+}else{
+  if(isset($_SESSION['cart'])){
+    $count = count($_SESSION['cart']);
+  }else{
+    $count = '0';
+  }
 }
  ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Vegefoods</title>
-    <style>
+     <style>
       .img-prod img {
     width: 100%;
     height: auto;
@@ -39,7 +44,9 @@ if (isset($_SESSION['user'])) {
     height: 100%;
     object-fit: cover;
 }
-</style>
+
+    </style>
+    <title>Vegefoods</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
@@ -76,7 +83,7 @@ if (isset($_SESSION['user'])) {
 
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
-	          <li class="nav-item active"><a href="index.php" class="nav-link">Trang chủ</a></li>
+	          <li class="nav-item"><a href="index.php" class="nav-link">Trang chủ</a></li>
 	          <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cửa hàng</a>
               <div class="dropdown-menu" aria-labelledby="dropdown04">
@@ -84,13 +91,10 @@ if (isset($_SESSION['user'])) {
               	<a class="dropdown-item" href="wishlist.php">Danh sách yêu thích</a>
               </div>
             </li>
-	          <li class="nav-item"><a href="about.php" class="nav-link">About</a></li>
+	          <li class="nav-item"><a href="about.php" class="nav-link">Về chúng tôi</a></li>
 	          <li class="nav-item"><a href="blog.php" class="nav-link">Tin tức</a></li>
 	          <li class="nav-item"><a href="contact.php" class="nav-link">Liên hệ</a></li>
-	          <li class="nav-item cta cta-colored"><a href="cart.php" class="nav-link"><span class="icon-shopping_cart"></span>[<?php if (isset($_SESSION["user"])) {
-              echo $count;
-            } else
-              echo '0'; ?>]</a></li>
+	          <li class="nav-item cta cta-colored"><a href="cart.php" class="nav-link"><span class="icon-shopping_cart"></span>[<?php echo $count;?>]</a></li>
             <li class="nav-item dropdown">
               <?php if (isset($_SESSION["user"])) {
               ?>
@@ -137,7 +141,7 @@ if (isset($_SESSION['user'])) {
 
 	            <div class="col-sm-12 ftco-animate text-center">
 	              <h1 class="mb-2">100% Tươi &amp; Thực phẩm hữu cơ</h1>
-	              <h2 class="subheading mb-4">húng tôi cung cấp rau và trái cây hữu cơ</h2>
+	              <h2 class="subheading mb-4">Chúng tôi cung cấp rau và trái cây hữu cơ</h2>
 	              <p><a href="blog.php" class="btn btn-primary">Xem chi tiết</a></p>
 	            </div>
 
@@ -156,8 +160,8 @@ if (isset($_SESSION['user'])) {
             		<span class="flaticon-shipped"></span>
               </div>
               <div class="media-body">
-                <h3 class="heading">Free Shipping</h3>
-                <span>On order over $100</span>
+                <h3 class="heading">Giao hàng miễn phí</h3>
+                <span>Cho hoá đơn trên 2.000.000</span>
               </div>
             </div>      
           </div>
@@ -167,8 +171,8 @@ if (isset($_SESSION['user'])) {
             		<span class="flaticon-diet"></span>
               </div>
               <div class="media-body">
-                <h3 class="heading">Always Fresh</h3>
-                <span>Product well package</span>
+                <h3 class="heading">Luôn tươi</h3>
+                <span>Đầy đủ bao bì</span>
               </div>
             </div>    
           </div>
@@ -178,8 +182,8 @@ if (isset($_SESSION['user'])) {
             		<span class="flaticon-award"></span>
               </div>
               <div class="media-body">
-                <h3 class="heading">Superior Quality</h3>
-                <span>Quality Products</span>
+                <h3 class="heading">Chất lượng cao</h3>
+                <span>An toàn thực phẩm</span>
               </div>
             </div>      
           </div>
@@ -189,8 +193,8 @@ if (isset($_SESSION['user'])) {
             		<span class="flaticon-customer-service"></span>
               </div>
               <div class="media-body">
-                <h3 class="heading">Support</h3>
-                <span>24/7 Support</span>
+                <h3 class="heading">Hỗ trợ</h3>
+                <span>Hỗ trợ 24/7</span>
               </div>
             </div>      
           </div>
@@ -206,7 +210,7 @@ if (isset($_SESSION['user'])) {
 							<div class="col-md-6 order-md-last align-items-stretch d-flex">
 								<div class="category-wrap-2 ftco-animate img align-self-stretch d-flex" style="background-image: url(images/category.jpg);">
 									<div class="text text-center">
-										<h2>Vegetables</h2>
+										<h2>Vegefoods</h2>
 										<p>Bảo vệ sức khỏe mọi nhà</p>
 										<p><a href="shop.php" class="btn btn-primary">Mua ngay</a></p>
 									</div>
@@ -215,12 +219,12 @@ if (isset($_SESSION['user'])) {
 							<div class="col-md-6">
 								<div class="category-wrap ftco-animate img mb-4 d-flex align-items-end" style="background-image: url(images/category-1.jpg);">
 									<div class="text px-3 py-1">
-										<h2 class="mb-0"><a href="shop.php?cat=Fruits">Fruits</a></h2>
+										<h2 class="mb-0"><a href="shop.php?cat=Fruits">Hoa quả</a></h2>
 									</div>
 								</div>
 								<div class="category-wrap ftco-animate img d-flex align-items-end" style="background-image: url(images/category-2.jpg);">
 									<div class="text px-3 py-1">
-										<h2 class="mb-0"><a href="shop.php?cat=Vegetables">Vegetables</a></h2>
+										<h2 class="mb-0"><a href="shop.php?cat=Vegetables">Rau củ</a></h2>
 									</div>
 								</div>
 							</div>
@@ -230,14 +234,13 @@ if (isset($_SESSION['user'])) {
 					<div class="col-md-4">
 						<div class="category-wrap ftco-animate img d-flex align-items-end" style="background-image: url(images/category-4.jpg);">
 							<div class="text px-3 py-1">
-								<h2 class="mb-0"><a href="shop.php?cat=Dried">Dried</a></h2>
+								<h2 class="mb-0"><a href="shop.php?cat=Dried">Các loại hạt</a></h2>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
-
     <section class="ftco-section">
     	<div class="container">
 				<div class="row justify-content-center mb-3 pb-3">
@@ -262,7 +265,7 @@ if (isset($_SESSION['user'])) {
     			<div class="col-md-6 col-lg-3 ftco-animate">
     				<div class="product">
     					<a href="product-single.php?id_pro=<?php echo $pro['id_pro'] ?>" class="img-prod"><img class="img-fluid" src="../Admin/upload/<?php echo $pro['image'] ?>  " alt="<?php echo $pro['name_pro'] ?>">
-    					<p class="price"><?php if (isset($pro['price_sale'])) { ?><span class="status"><?php echo (100 * ($pro['price'] - $pro['price_sale'])) / $pro['price'] ?>%</span>	<?php } ?>
+    					<p class="price"><?php if (isset($pro['price_sale'])) { ?><span class="status"><?php echo round((100 * ($pro['price'] - $pro['price_sale'])) / $pro['price']); ?>%</span>	<?php } ?>
               <div class="overlay"></div>
     					</a>
     					<div class="text py-3 pb-4 px-3 text-center">
@@ -301,9 +304,8 @@ if (isset($_SESSION['user'])) {
       <div class="container">
         <div class="row justify-content-center mb-5 pb-3">
           <div class="col-md-7 heading-section ftco-animate text-center">
-          	<span class="subheading">Testimony</span>
-            <h2 class="mb-4">Our satisfied customer says</h2>
-            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in</p>
+          	<span class="subheading">Đánh giá</span>
+            <h2 class="mb-4">Đánh giá của những khách hàng thân mến của chúng tôi</h2>
           </div>
         </div>
         <div class="row ftco-animate">
@@ -317,9 +319,8 @@ if (isset($_SESSION['user'])) {
                     </span>
                   </div>
                   <div class="text text-center">
-                    <p class="mb-5 pl-4 line">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                    <p class="name">Garreth Smith</p>
-                    <span class="position">Marketing Manager</span>
+                    <p class="mb-5 pl-4 line">Cà chua tươi ngon, mọng nước, vị ngọt thanh. Đã thử làm salad, rất hợp!</p>
+                    <p class="name">Vũ Kiệt</p>
                   </div>
                 </div>
               </div>
@@ -331,9 +332,8 @@ if (isset($_SESSION['user'])) {
                     </span>
                   </div>
                   <div class="text text-center">
-                    <p class="mb-5 pl-4 line">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                    <p class="name">Garreth Smith</p>
-                    <span class="position">Interface Designer</span>
+                    <p class="mb-5 pl-4 line">Táo đỏ giòn ngọt, vị chua nhẹ. Ăn rất vừa miệng, tốt cho sức khỏe.</p>
+                    <p class="name">Mạc Thanh Bình</p>
                   </div>
                 </div>
               </div>
@@ -345,9 +345,8 @@ if (isset($_SESSION['user'])) {
                     </span>
                   </div>
                   <div class="text text-center">
-                    <p class="mb-5 pl-4 line">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                    <p class="name">Garreth Smith</p>
-                    <span class="position">UI Designer</span>
+                    <p class="mb-5 pl-4 line">Chuối chín vàng ươm, thịt mềm, thơm lừng. Ăn sáng rất tiện lợi.</p>
+                    <p class="name">Phí Văn Quân</p> 
                   </div>
                 </div>
               </div>
@@ -359,9 +358,8 @@ if (isset($_SESSION['user'])) {
                     </span>
                   </div>
                   <div class="text text-center">
-                    <p class="mb-5 pl-4 line">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                    <p class="name">Garreth Smith</p>
-                    <span class="position">Web Developer</span>
+                    <p class="mb-5 pl-4 line">Óc chó bùi béo, giàu dinh dưỡng. Tốt cho trí não.</p>
+                    <p class="name">Phan Đức</p>
                   </div>
                 </div>
               </div>
@@ -373,9 +371,8 @@ if (isset($_SESSION['user'])) {
                     </span>
                   </div>
                   <div class="text text-center">
-                    <p class="mb-5 pl-4 line">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                    <p class="name">Garreth Smith</p>
-                    <span class="position">System Analyst</span>
+                    <p class="mb-5 pl-4 line">Hạt bí ngô rang mặn mà, giòn rụm. Ăn kèm bia rất ngon..</p>
+                    <p class="name">Tùng Dương</p>
                   </div>
                 </div>
               </div>
@@ -421,7 +418,7 @@ if (isset($_SESSION['user'])) {
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
               <h2 class="ftco-heading-2">Vegefoods</h2>
-              <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.</p>
+              <p>Sản phẩm tươi sạch</p>
               <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
                 <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
                 <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
@@ -431,35 +428,32 @@ if (isset($_SESSION['user'])) {
           </div>
           <div class="col-md">
             <div class="ftco-footer-widget mb-4 ml-md-5">
-              <h2 class="ftco-heading-2">Menu</h2>
+              <h2 class="ftco-heading-2">Danh mục</h2>
               <ul class="list-unstyled">
-                <li><a href="#" class="py-2 d-block">Shop</a></li>
-                <li><a href="#" class="py-2 d-block">About</a></li>
-                <li><a href="#" class="py-2 d-block">Journal</a></li>
-                <li><a href="#" class="py-2 d-block">Contact Us</a></li>
+                <li><a href="shop.php" class="py-2 d-block">Cửa hàng</a></li>
+                <li><a href="about.php" class="py-2 d-block">Về chúng tôi</a></li>
+                <li><a href="blog.php" class="py-2 d-block">Tin tức</a></li>
+                <li><a href="contact.php" class="py-2 d-block">Liên hệ</a></li>
               </ul>
             </div>
           </div>
           <div class="col-md-4">
              <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Help</h2>
+              <h2 class="ftco-heading-2">Hỗ trợ</h2>
               <div class="d-flex">
 	              <ul class="list-unstyled mr-l-5 pr-l-3 mr-4">
-	                <li><a href="#" class="py-2 d-block">Shipping Information</a></li>
-	                <li><a href="#" class="py-2 d-block">Returns &amp; Exchange</a></li>
-	                <li><a href="#" class="py-2 d-block">Terms &amp; Conditions</a></li>
-	                <li><a href="#" class="py-2 d-block">Privacy Policy</a></li>
+	                <li><a href="#" class="py-2 d-block">Thông tin vận chuyển</a></li>
+	                <li><a href="#" class="py-2 d-block">Trả hàng &amp; Hoàn tiền</a></li>
+	                <li><a href="#" class="py-2 d-block">Điểu khoản &amp; Quy định</a></li>
+	                <li><a href="#" class="py-2 d-block">Chính sách bảo mật</a></li>
 	              </ul>
-	              <ul class="list-unstyled">
-	                <li><a href="#" class="py-2 d-block">FAQs</a></li>
-	                <li><a href="#" class="py-2 d-block">Contact</a></li>
-	              </ul>
+	           
 	            </div>
             </div>
           </div>
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
-            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<h2 class="ftco-heading-2">Bạn có thắc mắc?</h2>
             	<div class="block-23 mb-3">
 	              <ul>
 	                <li><span class="icon icon-map-marker"></span><span class="text">218, Minh Khai, Hai Bà Trưng, Hà Nội</span></li>

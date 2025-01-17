@@ -159,33 +159,53 @@ class data_user
     }
     public function insert_address($user,$name,$phone,$address){
         global $conn;
-        $sql = "INSERT INTO `address`(`username`, `name_custommer`, `phone`, `address`) VALUES ('$user','$name','$phone','$address')";
+        $sql = "INSERT INTO `address_cus`(`username`, `name_custommer`, `phone`, `address`) VALUES ('$user','$name','$phone','$address')";
         $run = mysqli_query($conn,$sql);
         return $run;
     } 
         
     public function select_address($user){
         global $conn;
-        $sql = "SELECT * FROM Address WHERE username='$user'";
+        $sql = "SELECT * FROM address_cus WHERE username='$user'";
         $run = mysqli_query($conn, $sql);
         return $run;
     }
     public function update_address($user,$id, $name, $phone,$address){
         global $conn;
-        $sql = "UPDATE Address SET name='$name',phone='$phone',address='$address' WHERE id_address ='$id' AND username='$user'";
+        $sql = "UPDATE address_cus SET name='$name',phone='$phone',address='$address' WHERE id_address ='$id' AND username='$user'";
         $run = mysqli_query($conn, $sql);
         return $run;
     }
     public function delete_address($user, $id)
     {
         global $conn;
-        $sql = "DELETE FROM Address WHERE username='$user' AND id_address='$id'";
+        $sql = "DELETE FROM address_cus WHERE username='$user' AND id_address='$id'";
         $run = mysqli_query($conn, $sql);
         return $run;
     }
     public function select_order($user){
         global $conn;
         $sql = "SELECT * FROM order_pro WHERE userName = '$user'";
+        $run = mysqli_query($conn, $sql);
+        return $run;
+    }
+    public function select_add_id($user, $id)
+    {
+        global $conn;
+        $sql = "SELECT * FROM address_cus WHERE username= '$user' and id_address='$id'";
+        $run = mysqli_query($conn, $sql);
+        return $run;
+    }
+    public function update_add_id($user, $id, $name, $phone, $address)
+    {
+        global $conn;
+        $sql = "UPDATE address_cus SET name_custommer='$name', phone='$phone', address='$address' WHERE username= '$user' and id_address='$id' ";
+        $run = mysqli_query($conn, $sql);
+        return $run;
+    }
+    public function delete_add_id($user, $id){
+        global $conn;
+        $sql = "DELETE FROM address_cus WHERE username= '$user' and id_address='$id'";
         $run = mysqli_query($conn, $sql);
         return $run;
     }

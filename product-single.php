@@ -4,42 +4,29 @@ session_start();
           $get_data = new data_user();
 if (isset($_SESSION['user'])) {
   $count = $get_data->count_Cart($_SESSION['user']);
+}else{
+  if(isset($_SESSION['cart'])){
+    $count = count($_SESSION['cart']);
+  }else{
+    $count = '0';
+  }
 }
  ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
-	<style>
-      .img-prod img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    aspect-ratio: 1/1; /* This will maintain a 1:1 aspect ratio */
-}
-
-.product {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    max-width: 300px; /* Adjust this to your preferred maximum width */
-    margin: auto;
-}
-
-.product .img-prod {
-    width: 100%;
-    height: 300px; /* Adjust this to your preferred height */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.product .img-prod img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-</style>
     <title>Vegefoods</title>
+	<style>
+		#main-image {
+    width: 600px; /* Set the desired width */
+    height: 500px; /* Set the desired height */
+    object-fit: cover; /* Ensure the image covers the specified dimensions */
+}
+
+img {
+    cursor: pointer; /* Make it clear that the thumbnails are clickable */
+}
+	</style>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
@@ -78,7 +65,7 @@ if (isset($_SESSION['user'])) {
 	        <ul class="navbar-nav ml-auto">
 	          <li class="nav-item"><a href="index.php" class="nav-link">Trang chủ</a></li>
 	          <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle active" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cửa hàng</a>
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cửa hàng</a>
               <div class="dropdown-menu" aria-labelledby="dropdown04">
               	<a class="dropdown-item" href="shop.php">Cửa hàng</a>
               	<a class="dropdown-item" href="wishlist.php">Danh sách yêu thích</a>
@@ -87,10 +74,7 @@ if (isset($_SESSION['user'])) {
 	          <li class="nav-item"><a href="about.php" class="nav-link">About</a></li>
 	          <li class="nav-item"><a href="blog.php" class="nav-link">Tin tức</a></li>
 	          <li class="nav-item"><a href="contact.php" class="nav-link">Liên hệ</a></li>
-	          <li class="nav-item cta cta-colored"><a href="cart.php" class="nav-link"><span class="icon-shopping_cart"></span>[<?php if (isset($_SESSION["user"])) {
-              echo $count;
-            } else
-              echo '0'; ?>]</a></li>
+	          <li class="nav-item cta cta-colored"><a href="cart.php" class="nav-link"><span class="icon-shopping_cart"></span>[<?php echo $count;?>]</a></li>
             <li class="nav-item dropdown">
               <?php if (isset($_SESSION["user"])) {
               ?>
@@ -117,7 +101,7 @@ if (isset($_SESSION['user'])) {
       <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index.php">Home</a></span> <span class="mr-2"><a href="index.php">Product</a></span> <span>Product Single</span></p>
+          	<p class="breadcrumbs"><span class="mr-2"><a href="index.php">Trang chủ</a></span> <span class="mr-2"><a href="index.php">Sản phẩm</a></span> <span>Chi tiết sản phẩm</span></p>
             <h1 class="mb-0 bread">Chi tiết sản phẩm</h1>
           </div>
         </div>
@@ -157,10 +141,10 @@ if (isset($_SESSION['user'])) {
 									<a href="#"><span class="ion-ios-star-outline"></span></a>
 								</p>
 								<p class="text-left mr-4">
-									<a href="#" class="mr-2" style="color: #000;">100 <span style="color: #bbb;">Rating</span></a>
+									<a href="#" class="mr-2" style="color: #000;">100 <span style="color: #bbb;">Đánh giá</span></a>
 								</p>
 								<p class="text-left">
-									<a href="#" class="mr-2" style="color: #000;">500 <span style="color: #bbb;">Sold</span></a>
+									<a href="#" class="mr-2" style="color: #000;">500 <span style="color: #bbb;">Đã bán</span></a>
 								</p>
 							</div>
 	    				<p class="price"><?php if (isset($pro['price_sale'])) { ?><span class="price-sale"><?php
@@ -192,11 +176,11 @@ if (isset($_SESSION['user'])) {
 		          	</div>
 		          	<div class="w-100"></div>
 		          	<div class="col-md-12">
-		          		<p style="color: #000;"><?php echo $pro['quantity']." kg available" ?></p>
+		          		<p style="color: #000;"><?php echo "Còn ". $pro['quantity']."kg" ?></p>
 		          	</div>
 					<?php } ?>
 	          	</div>
-	          	<input class="btn btn-primary py-3 px-5" type="submit" name="txtsub" value="Add to Cart"></input>
+	          	<input class="btn btn-primary py-3 px-5" type="submit" name="txtsub" value="Thêm vào giỏ"></input>
 	    			</div>
 	    		</div>
 	    	</div>
@@ -204,40 +188,66 @@ if (isset($_SESSION['user'])) {
     </form>
 	<?php
 	if(isset($_POST['txtsub'])){
-	if(empty($_SESSION['user'])){
-    echo "<script>alert('Ban can dang nhap de thuc hien thao tac nay');
-    window.location=('sign-in.php')</script>";
-}else{
+	
     if(empty($_POST['quantity'])){
         echo "<script>alert('Vui lòng nhập đủ thông tin');</script>";
     } else {
 			foreach ($select_id_pro as $se) {
 				if ($_POST['quantity'] < 1 || $_POST['quantity'] > $se['quantity']) {
 					echo "<script>alert('Số lượng không phù hợp');</script>";
-				} else {
-					$id_pro = $_GET['id_pro'];
-					$quantity = $_POST['quantity'];
-					$update = $get_data->update_quantity_pro( $se['id_pro'], $se['quantity'] - $quantity);
-					$select_cart = $get_data->select_cart( $_SESSION['user']);
-					$found = false;
-					foreach($select_cart as $cart_item){
-					            if($cart_item['id_pro'] == $id_pro ){
-					                $new_total= $cart_item['total'] + $quantity*$cart_item['price'];
+					} else {
+						$id_pro = $_GET['id_pro'];
+						$quantity = $_POST['quantity'];
+						$update = $get_data->update_quantity_pro($se['id_pro'], $se['quantity'] - $quantity);
+						$new_product = array(
+							'id_pro' => $se['id_pro'],
+							'name' => $se['name_pro'],
+							'quantity' => $quantity,
+							'picture' => $se['image'],
+							'price' => $price_sale,
+							'total' => $price_sale * $quantity
+						);
+						if (isset($_SESSION['user'])) {
+							$select_cart = $get_data->select_cart($_SESSION['user']);
+							$found = false;
+							foreach ($select_cart as $cart_item) {
+								if ($cart_item['id_pro'] == $id_pro) {
+									$new_total = $cart_item['total'] + $quantity * $cart_item['price'];
 									$found = true;
-					                $updateResult = $get_data->update_cart_item($cart_item['id_pro'], $cart_item['quantity_order']+$quantity, $new_total,$_SESSION['user']);
-					                echo "<script>window.location=('cart.php')</script>";
+									$updateResult = $get_data->update_cart_item($cart_item['id_pro'], $cart_item['quantity_order'] + $quantity, $new_total, $_SESSION['user']);
+									echo "<script>window.location=('cart.php')</script>";
 									break;
-					            }
-					        }
-					        if(!$found){
-					            $insertResult = $get_data->insert_Cart($_SESSION['user'], $se['id_pro'], $se['name_pro'],$price_sale, $se['image'], $quantity, $price_sale*$quantity);
-					            echo "<script>window.location=('cart.php')</script>";
-					        }
-					    }
+								}
+							}
+
+							if (!$found) {
+								$insertResult = $get_data->insert_Cart($_SESSION['user'], $se['id_pro'], $se['name_pro'], $price_sale, $se['image'], $quantity, $price_sale * $quantity);
+								echo "<script>window.location=('cart.php')</script>";
+							}
+						}else if(isset($_SESSION['cart'])){
+							$found = false;
+							
+							foreach($_SESSION['cart'] as &$cart_item){
+                        	if($cart_item['id_pro'] == $id_pro){
+                            $cart_item['quantity'] += $quantity;
+        					$cart_item['total'] += $quantity * $cart_item['price'];
+                            $found = true;
+                            echo "<script>window.location=('cart.php')</script>";
+							break;
+                        }
+                    }
+					if($found==false){
+                        $_SESSION['cart'][] = $new_product;
+                        echo "<script>window.location=('cart.php')</script>";
+                    }
+						} else{
+                    	$_SESSION['cart'][] = $new_product;
+                        echo "<script>window.location=('cart.php')</script>";
+                }
+					}
 					}
 				}
 			}
-		}
 	 ?>
     <section class="ftco-section">
     	<div class="container">
@@ -263,7 +273,7 @@ if (isset($_SESSION['user'])) {
     			<div class="col-md-6 col-lg-3 ftco-animate">
     				<div class="product">
     					<a href="product-single.php?id_pro=<?php echo $pro['id_pro'] ?>" class="img-prod"><img class="img-fluid" src="../Admin/upload/<?php echo $pro['image'] ?>  " alt="<?php echo $pro['name_pro'] ?>">
-    					<p class="price"><?php if (isset($pro['price_sale'])) { ?><span class="status"><?php echo (100 * ($pro['price'] - $pro['price_sale'])) / $pro['price'] ?>%</span>	<?php } ?>
+    					<p class="price"><?php if (isset($pro['price_sale'])) { ?><span class="status"><?php echo round((100 * ($pro['price'] - $pro['price_sale'])) / $pro['price']); ?>%</span>	<?php } ?>
               <div class="overlay"></div>
     					</a>
     					<div class="text py-3 pb-4 px-3 text-center">
@@ -301,18 +311,11 @@ if (isset($_SESSION['user'])) {
 
     <footer class="ftco-footer ftco-section">
       <div class="container">
-      	<div class="row">
-      		<div class="mouse">
-						<a href="#" class="mouse-icon">
-							<div class="mouse-wheel"><span class="ion-ios-arrow-up"></span></div>
-						</a>
-					</div>
-      	</div>
         <div class="row mb-5">
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
               <h2 class="ftco-heading-2">Vegefoods</h2>
-              <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.</p>
+              <p>Sản phẩm tươi sạch</p>
               <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
                 <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
                 <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
@@ -322,38 +325,35 @@ if (isset($_SESSION['user'])) {
           </div>
           <div class="col-md">
             <div class="ftco-footer-widget mb-4 ml-md-5">
-              <h2 class="ftco-heading-2">Menu</h2>
+              <h2 class="ftco-heading-2">Danh mục</h2>
               <ul class="list-unstyled">
-                <li><a href="#" class="py-2 d-block">Shop</a></li>
-                <li><a href="#" class="py-2 d-block">About</a></li>
-                <li><a href="#" class="py-2 d-block">Journal</a></li>
-                <li><a href="#" class="py-2 d-block">Contact Us</a></li>
+                <li><a href="shop.php" class="py-2 d-block">Cửa hàng</a></li>
+                <li><a href="about.php" class="py-2 d-block">Về chúng tôi</a></li>
+                <li><a href="blog.php" class="py-2 d-block">Tin tức</a></li>
+                <li><a href="contact.php" class="py-2 d-block">Liên hệ</a></li>
               </ul>
             </div>
           </div>
           <div class="col-md-4">
              <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Help</h2>
+              <h2 class="ftco-heading-2">Hỗ trợ</h2>
               <div class="d-flex">
 	              <ul class="list-unstyled mr-l-5 pr-l-3 mr-4">
-	                <li><a href="#" class="py-2 d-block">Shipping Information</a></li>
-	                <li><a href="#" class="py-2 d-block">Returns &amp; Exchange</a></li>
-	                <li><a href="#" class="py-2 d-block">Terms &amp; Conditions</a></li>
-	                <li><a href="#" class="py-2 d-block">Privacy Policy</a></li>
+	                <li><a href="#" class="py-2 d-block">Thông tin vận chuyển</a></li>
+	                <li><a href="#" class="py-2 d-block">Trả hàng &amp; Hoàn tiền</a></li>
+	                <li><a href="#" class="py-2 d-block">Điểu khoản &amp; Quy định</a></li>
+	                <li><a href="#" class="py-2 d-block">Chính sách bảo mật</a></li>
 	              </ul>
-	              <ul class="list-unstyled">
-	                <li><a href="#" class="py-2 d-block">FAQs</a></li>
-	                <li><a href="#" class="py-2 d-block">Contact</a></li>
-	              </ul>
+	           
 	            </div>
             </div>
           </div>
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
-            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<h2 class="ftco-heading-2">Bạn có thắc mắc?</h2>
             	<div class="block-23 mb-3">
 	              <ul>
-	                <<li><span class="icon icon-map-marker"></span><span class="text">218, Minh Khai, Hai Bà Trưng, Hà Nội</span></li>
+	                <li><span class="icon icon-map-marker"></span><span class="text">218, Minh Khai, Hai Bà Trưng, Hà Nội</span></li>
 	                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+0369852147</span></a></li>
 	                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">quan@gmail.com</span></a></li>
 	              </ul>

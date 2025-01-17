@@ -4,6 +4,12 @@ session_start();
           $get_data = new data_user();
 if (isset($_SESSION['user'])) {
   $count = $get_data->count_Cart($_SESSION['user']);
+}else{
+  if(isset($_SESSION['cart'])){
+    $count = count($_SESSION['cart']);
+  }else{
+    $count = '0';
+  }
 }
  ?>
 <!DOCTYPE html>
@@ -46,7 +52,7 @@ if (isset($_SESSION['user'])) {
 
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
-	          <li class="nav-item "><a href="index.php" class="nav-link">Trang chủ</a></li>
+	          <li class="nav-item"><a href="index.php" class="nav-link">Trang chủ</a></li>
 	          <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cửa hàng</a>
               <div class="dropdown-menu" aria-labelledby="dropdown04">
@@ -54,13 +60,10 @@ if (isset($_SESSION['user'])) {
               	<a class="dropdown-item" href="wishlist.php">Danh sách yêu thích</a>
               </div>
             </li>
-	          <li class="nav-item"><a href="about.php" class="nav-link">About</a></li>
-	          <li class="nav-item active"><a href="blog.php" class="nav-link">Tin tức</a></li>
+	          <li class="nav-item"><a href="about.php" class="nav-link">Về chúng tôi</a></li>
+	          <li class="nav-item"><a href="blog.php" class="nav-link">Tin tức</a></li>
 	          <li class="nav-item"><a href="contact.php" class="nav-link">Liên hệ</a></li>
-	          <li class="nav-item cta cta-colored"><a href="cart.php" class="nav-link"><span class="icon-shopping_cart"></span>[<?php if (isset($_SESSION["user"])) {
-              echo $count;
-            } else
-              echo '0'; ?>]</a></li>
+	          <li class="nav-item cta cta-colored"><a href="cart.php" class="nav-link"><span class="icon-shopping_cart"></span>[<?php echo $count;?>]</a></li>
             <li class="nav-item dropdown">
               <?php if (isset($_SESSION["user"])) {
               ?>
@@ -87,8 +90,8 @@ if (isset($_SESSION['user'])) {
       <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index.php">Home</a></span> <span>Blog</span></p>
-            <h1 class="mb-0 bread">Blog</h1>
+          	<p class="breadcrumbs"><span class="mr-2"><a href="index.php">Trang chủ</a></span> <span>Tin tức</span></p>
+            <h1 class="mb-0 bread">Tin tức</h1>
           </div>
         </div>
       </div>
@@ -105,13 +108,13 @@ if (isset($_SESSION['user'])) {
 		              </a>
 		              <div class="text d-block pl-md-4">
 		              	<div class="meta mb-3">
-		                  <div><a href="#">July 20, 2019</a></div>
+		                  <div><a href="#">30/7/2024</a></div>
 		                  <div><a href="#">Admin</a></div>
 		                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
 		                </div>
-		                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
-		                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-		                <p><a href="blog-single.php" class="btn btn-primary py-2 px-3">Read more</a></p>
+		                <h3 class="heading"><a href="blog-single.php">Lợi ích và Tầm Quan Trọng của Rau Củ Quả trong Cuộc Sống Hằng Ngày</a></h3>
+		                <p>Rau củ quả là một phần không thể thiếu trong chế độ ăn uống của con người. Chúng không chỉ cung cấp nhiều dưỡng chất cần thiết mà còn mang lại nhiều lợi ích cho sức khỏe. Trong bài viết này, chúng ta sẽ khám phá lý do tại sao rau củ quả lại quan trọng và những cách tốt nhất để tận dụng chúng trong chế độ ăn uống hàng ngày.</p>
+		                <p><a href="blog-single.php" class="btn btn-primary py-2 px-3">Xem thêm</a></p>
 		              </div>
 		            </div>
 		          </div>
@@ -121,13 +124,13 @@ if (isset($_SESSION['user'])) {
 		              </a>
 		              <div class="text d-block pl-md-4">
 		              	<div class="meta mb-3">
-		                  <div><a href="#">July 20, 2019</a></div>
+		                  <div><a href="#">30/7/2024</a></div>
 		                  <div><a href="#">Admin</a></div>
 		                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
 		                </div>
-		                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
-		                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-		                <p><a href="blog-single.php" class="btn btn-primary py-2 px-3">Read more</a></p>
+		                <h3 class="heading"><a href="blog-single.php">Lợi ích và Tầm Quan Trọng của Rau Củ Quả trong Cuộc Sống Hằng Ngày</a></h3>
+		                <p>Rau củ quả là một phần không thể thiếu trong chế độ ăn uống của con người. Chúng không chỉ cung cấp nhiều dưỡng chất cần thiết mà còn mang lại nhiều lợi ích cho sức khỏe. Trong bài viết này, chúng ta sẽ khám phá lý do tại sao rau củ quả lại quan trọng và những cách tốt nhất để tận dụng chúng trong chế độ ăn uống hàng ngày.</p>
+		                <p><a href="blog-single.php" class="btn btn-primary py-2 px-3">Xem thêm</a></p>
 		              </div>
 		            </div>
 		          </div>
@@ -137,13 +140,13 @@ if (isset($_SESSION['user'])) {
 		              </a>
 		              <div class="text d-block pl-md-4">
 		              	<div class="meta mb-3">
-		                  <div><a href="#">July 20, 2019</a></div>
+		                  <div><a href="#">30/7/2024</a></div>
 		                  <div><a href="#">Admin</a></div>
 		                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
 		                </div>
-		                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
-		                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-		                <p><a href="blog-single.php" class="btn btn-primary py-2 px-3">Read more</a></p>
+		                <h3 class="heading"><a href="blog-single.php">Lợi ích và Tầm Quan Trọng của Rau Củ Quả trong Cuộc Sống Hằng Ngày</a></h3>
+		                <p>Rau củ quả là một phần không thể thiếu trong chế độ ăn uống của con người. Chúng không chỉ cung cấp nhiều dưỡng chất cần thiết mà còn mang lại nhiều lợi ích cho sức khỏe. Trong bài viết này, chúng ta sẽ khám phá lý do tại sao rau củ quả lại quan trọng và những cách tốt nhất để tận dụng chúng trong chế độ ăn uống hàng ngày.</p>
+		                <p><a href="blog-single.php" class="btn btn-primary py-2 px-3">Xem thêm</a></p>
 		              </div>
 		            </div>
 		          </div>
@@ -153,13 +156,13 @@ if (isset($_SESSION['user'])) {
 		              </a>
 		              <div class="text d-block pl-md-4">
 		              	<div class="meta mb-3">
-		                  <div><a href="#">July 20, 2019</a></div>
+		                  <div><a href="#">30/7/2024</a></div>
 		                  <div><a href="#">Admin</a></div>
 		                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
 		                </div>
-		                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
-		                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-		                <p><a href="blog-single.php" class="btn btn-primary py-2 px-3">Read more</a></p>
+		                <h3 class="heading"><a href="blog-single.php">Lợi ích và Tầm Quan Trọng của Rau Củ Quả trong Cuộc Sống Hằng Ngày</a></h3>
+		                <p>Rau củ quả là một phần không thể thiếu trong chế độ ăn uống của con người. Chúng không chỉ cung cấp nhiều dưỡng chất cần thiết mà còn mang lại nhiều lợi ích cho sức khỏe. Trong bài viết này, chúng ta sẽ khám phá lý do tại sao rau củ quả lại quan trọng và những cách tốt nhất để tận dụng chúng trong chế độ ăn uống hàng ngày.</p>
+		                <p><a href="blog-single.php" class="btn btn-primary py-2 px-3">Xem thêm</a></p>
 		              </div>
 		            </div>
 		          </div>
@@ -169,13 +172,13 @@ if (isset($_SESSION['user'])) {
 		              </a>
 		              <div class="text d-block pl-md-4">
 		              	<div class="meta mb-3">
-		                  <div><a href="#">July 20, 2019</a></div>
+		                  <div><a href="#">30/7/2024</a></div>
 		                  <div><a href="#">Admin</a></div>
 		                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
 		                </div>
-		                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
-		                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-		                <p><a href="blog-single.php" class="btn btn-primary py-2 px-3">Read more</a></p>
+		                <h3 class="heading"><a href="blog-single.php">Lợi ích và Tầm Quan Trọng của Rau Củ Quả trong Cuộc Sống Hằng Ngày</a></h3>
+		                <p>Rau củ quả là một phần không thể thiếu trong chế độ ăn uống của con người. Chúng không chỉ cung cấp nhiều dưỡng chất cần thiết mà còn mang lại nhiều lợi ích cho sức khỏe. Trong bài viết này, chúng ta sẽ khám phá lý do tại sao rau củ quả lại quan trọng và những cách tốt nhất để tận dụng chúng trong chế độ ăn uống hàng ngày.</p>
+		                <p><a href="blog-single.php" class="btn btn-primary py-2 px-3">Xem thêm</a></p>
 		              </div>
 		            </div>
 		          </div>
@@ -185,13 +188,13 @@ if (isset($_SESSION['user'])) {
 		              </a>
 		              <div class="text d-block pl-md-4">
 		              	<div class="meta mb-3">
-		                  <div><a href="#">July 20, 2019</a></div>
+		                  <div><a href="#">30/7/2024</a></div>
 		                  <div><a href="#">Admin</a></div>
 		                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
 		                </div>
-		                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
-		                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-		                <p><a href="blog-single.php" class="btn btn-primary py-2 px-3">Read more</a></p>
+		                <h3 class="heading"><a href="blog-single.php">Lợi ích và Tầm Quan Trọng của Rau Củ Quả trong Cuộc Sống Hằng Ngày</a></h3>
+		                <p>Rau củ quả là một phần không thể thiếu trong chế độ ăn uống của con người. Chúng không chỉ cung cấp nhiều dưỡng chất cần thiết mà còn mang lại nhiều lợi ích cho sức khỏe. Trong bài viết này, chúng ta sẽ khám phá lý do tại sao rau củ quả lại quan trọng và những cách tốt nhất để tận dụng chúng trong chế độ ăn uống hàng ngày.</p>
+		                <p><a href="blog-single.php" class="btn btn-primary py-2 px-3">Xem thêm</a></p>
 		              </div>
 		            </div>
 		          </div>
@@ -202,28 +205,28 @@ if (isset($_SESSION['user'])) {
               <form action="#" class="search-form">
                 <div class="form-group">
                   <span class="icon ion-ios-search"></span>
-                  <input type="text" class="form-control" placeholder="Search...">
+                  <input type="text" class="form-control" placeholder="Tìm Kiếm...">
                 </div>
               </form>
             </div>
             <div class="sidebar-box ftco-animate">
-            	<h3 class="heading">Categories</h3>
+            	<h3 class="heading">Danh Mục</h3>
               <ul class="categories">
-                <li><a href="#">Vegetables <span>(12)</span></a></li>
-                <li><a href="#">Fruits <span>(22)</span></a></li>
-                <li><a href="#">Juice <span>(37)</span></a></li>
-                <li><a href="#">Dries <span>(42)</span></a></li>
+                <li><a href="#">Rau củ <span>(12)</span></a></li>
+                <li><a href="#">Hoa Quả <span>(22)</span></a></li>
+
+                <li><a href="#">Các loại hạt <span>(42)</span></a></li>
               </ul>
             </div>
 
             <div class="sidebar-box ftco-animate">
-              <h3 class="heading">Recent Blog</h3>
+              <h3 class="heading">Tin tức mới nhất</h3>
               <div class="block-21 mb-4 d-flex">
                 <a class="blog-img mr-4" style="background-image: url(images/image_1.jpg);"></a>
                 <div class="text">
-                  <h3 class="heading-1"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                  <h3 class="heading-1"><a href="blog-single.php">Lợi ích và Tầm Quan Trọng của Rau Củ Quả trong Cuộc Sống Hằng Ngày</a></h3>
                   <div class="meta">
-                    <div><a href="#"><span class="icon-calendar"></span> April 09, 2019</a></div>
+                    <div><a href="#"><span class="icon-calendar"></span> 30/7/2024</a></div>
                     <div><a href="#"><span class="icon-person"></span> Admin</a></div>
                     <div><a href="#"><span class="icon-chat"></span> 19</a></div>
                   </div>
@@ -232,9 +235,9 @@ if (isset($_SESSION['user'])) {
               <div class="block-21 mb-4 d-flex">
                 <a class="blog-img mr-4" style="background-image: url(images/image_2.jpg);"></a>
                 <div class="text">
-                  <h3 class="heading-1"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                  <h3 class="heading-1"><a href="blog-single.php">Lợi ích và Tầm Quan Trọng của Rau Củ Quả trong Cuộc Sống Hằng Ngày</a></h3>
                   <div class="meta">
-                    <div><a href="#"><span class="icon-calendar"></span> April 09, 2019</a></div>
+                    <div><a href="#"><span class="icon-calendar"></span> 30/7/2024</a></div>
                     <div><a href="#"><span class="icon-person"></span> Admin</a></div>
                     <div><a href="#"><span class="icon-chat"></span> 19</a></div>
                   </div>
@@ -243,9 +246,9 @@ if (isset($_SESSION['user'])) {
               <div class="block-21 mb-4 d-flex">
                 <a class="blog-img mr-4" style="background-image: url(images/image_3.jpg);"></a>
                 <div class="text">
-                  <h3 class="heading-1"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                  <h3 class="heading-1"><a href="blog-single.php">Lợi ích và Tầm Quan Trọng của Rau Củ Quả trong Cuộc Sống Hằng Ngày</a></h3>
                   <div class="meta">
-                    <div><a href="#"><span class="icon-calendar"></span> April 09, 2019</a></div>
+                    <div><a href="#"><span class="icon-calendar"></span> 30/7/2024</a></div>
                     <div><a href="#"><span class="icon-person"></span> Admin</a></div>
                     <div><a href="#"><span class="icon-chat"></span> 19</a></div>
                   </div>
@@ -253,44 +256,21 @@ if (isset($_SESSION['user'])) {
               </div>
             </div>
 
-            <div class="sidebar-box ftco-animate">
-              <h3 class="heading">Tag Cloud</h3>
-              <div class="tagcloud">
-                <a href="#" class="tag-cloud-link">fruits</a>
-                <a href="#" class="tag-cloud-link">tomatoe</a>
-                <a href="#" class="tag-cloud-link">mango</a>
-                <a href="#" class="tag-cloud-link">apple</a>
-                <a href="#" class="tag-cloud-link">carrots</a>
-                <a href="#" class="tag-cloud-link">orange</a>
-                <a href="#" class="tag-cloud-link">pepper</a>
-                <a href="#" class="tag-cloud-link">eggplant</a>
-              </div>
-            </div>
+           
 
-            <div class="sidebar-box ftco-animate">
-              <h3 class="heading">Paragraph</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus itaque, autem necessitatibus voluptate quod mollitia delectus aut, sunt placeat nam vero culpa sapiente consectetur similique, inventore eos fugit cupiditate numquam!</p>
-            </div>
-          </div>
+            
 
         </div>
       </div>
     </section> <!-- .section -->
 
-    <footer class="ftco-footer ftco-section bg-light">
+    <footer class="ftco-footer ftco-section">
       <div class="container">
-      	<div class="row">
-      		<div class="mouse">
-						<a href="#" class="mouse-icon">
-							<div class="mouse-wheel"><span class="ion-ios-arrow-up"></span></div>
-						</a>
-					</div>
-      	</div>
         <div class="row mb-5">
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
               <h2 class="ftco-heading-2">Vegefoods</h2>
-              <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.</p>
+              <p>Sản phẩm tươi sạch</p>
               <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
                 <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
                 <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
@@ -300,35 +280,32 @@ if (isset($_SESSION['user'])) {
           </div>
           <div class="col-md">
             <div class="ftco-footer-widget mb-4 ml-md-5">
-              <h2 class="ftco-heading-2">Menu</h2>
+              <h2 class="ftco-heading-2">Danh mục</h2>
               <ul class="list-unstyled">
-                <li><a href="#" class="py-2 d-block">Shop</a></li>
-                <li><a href="#" class="py-2 d-block">About</a></li>
-                <li><a href="#" class="py-2 d-block">Journal</a></li>
-                <li><a href="#" class="py-2 d-block">Contact Us</a></li>
+                <li><a href="shop.php" class="py-2 d-block">Cửa hàng</a></li>
+                <li><a href="about.php" class="py-2 d-block">Về chúng tôi</a></li>
+                <li><a href="blog.php" class="py-2 d-block">Tin tức</a></li>
+                <li><a href="contact.php" class="py-2 d-block">Liên hệ</a></li>
               </ul>
             </div>
           </div>
           <div class="col-md-4">
              <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Help</h2>
+              <h2 class="ftco-heading-2">Hỗ trợ</h2>
               <div class="d-flex">
 	              <ul class="list-unstyled mr-l-5 pr-l-3 mr-4">
-	                <li><a href="#" class="py-2 d-block">Shipping Information</a></li>
-	                <li><a href="#" class="py-2 d-block">Returns &amp; Exchange</a></li>
-	                <li><a href="#" class="py-2 d-block">Terms &amp; Conditions</a></li>
-	                <li><a href="#" class="py-2 d-block">Privacy Policy</a></li>
+	                <li><a href="#" class="py-2 d-block">Thông tin vận chuyển</a></li>
+	                <li><a href="#" class="py-2 d-block">Trả hàng &amp; Hoàn tiền</a></li>
+	                <li><a href="#" class="py-2 d-block">Điểu khoản &amp; Quy định</a></li>
+	                <li><a href="#" class="py-2 d-block">Chính sách bảo mật</a></li>
 	              </ul>
-	              <ul class="list-unstyled">
-	                <li><a href="#" class="py-2 d-block">FAQs</a></li>
-	                <li><a href="#" class="py-2 d-block">Contact</a></li>
-	              </ul>
+	           
 	            </div>
             </div>
           </div>
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
-            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<h2 class="ftco-heading-2">Bạn có thắc mắc?</h2>
             	<div class="block-23 mb-3">
 	              <ul>
 	                <li><span class="icon icon-map-marker"></span><span class="text">218, Minh Khai, Hai Bà Trưng, Hà Nội</span></li>
