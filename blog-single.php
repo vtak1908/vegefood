@@ -252,7 +252,7 @@ Bảo Quản Đúng Cách: Bảo quản rau củ quả trong tủ lạnh hoặc 
 	              <ul>
 	                <li><span class="icon icon-map-marker"></span><span class="text">218, Minh Khai, Hai Bà Trưng, Hà Nội</span></li>
 	                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+0369852147</span></a></li>
-	                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">quan@gmail.com</span></a></li>
+	                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">vukiet252@gmail.com</span></a></li>
 	              </ul>
 	            </div>
             </div>
