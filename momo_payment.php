@@ -14,8 +14,8 @@ $accessKey   = 'F8BBA842ECF85';
 $secretKey   = 'K951B6PE1waDMi640xX08PD3vg6EkVlz';
 $orderId     = (string)time();
 $requestId   = (string)time();
-$returnUrl   = "https://localhost:8888/vegefood/momo_return.php";
-$notifyUrl   = "https://localhost:8888/vegefood/notify.php";
+$returnUrl   = "http://localhost:8888/vegefood/momo_return.php";
+$notifyUrl   = "http://localhost:8888/vegefood/notify.php";
 $extraData   = "";
 $requestType = "captureMoMoWallet";
 
