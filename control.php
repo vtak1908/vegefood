@@ -24,12 +24,14 @@ class data_user
         $run = mysqli_query($conn, $sql);
         return $run;
     }
-    public function count_Cart($user){
+    public function count_Cart($user) {
         global $conn;
-        $sql = "SELECT * FROM `cart` where username='$user'";
-        $run = mysqli_query($conn, $sql);
-        return mysqli_num_rows($run);
+        $sql = "SELECT COUNT(*) AS total FROM cart WHERE username = '$user'";
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_assoc($result);
+        return $row['total'];
     }
+    
     public function insert_contact($name, $email, $phone, $mes)
     {
         global $conn;
@@ -130,6 +132,7 @@ class data_user
         $lastInsertId = mysqli_insert_id($conn);
         return $lastInsertId;
     }
+    
     public function insert_Order_Detail($id_order, $id_pro, $name, $quantity, $total)
     {
         global $conn;
@@ -209,5 +212,13 @@ class data_user
         $run = mysqli_query($conn, $sql);
         return $run;
     }
+    public function addToCart($user, $id_pro, $name, $price, $picture, $qty, $total) {
+        global $conn;
+        $sql = "INSERT INTO tbl_cart (username, id_pro, name_pro, price, picture, quantity_order, total)
+                VALUES ('$user', '$id_pro', '$name', '$price', '$picture', '$qty', '$total')";
+        return mysqli_query($conn, $sql);
+    }
+    
+    
 }
 ?>

@@ -1,7 +1,19 @@
 <?php
 session_start();
-            include("control.php");
-          $get_data = new data_user();
+include("control.php");
+$get_data = new data_user();
+
+// Ensure these variables are initialized properly
+$id_pro = isset($_GET['id_pro']) ? $_GET['id_pro'] : null;
+$name_pro = isset($_POST['name_pro']) ? $_POST['name_pro'] : null;
+$price = isset($_POST['price']) ? $_POST['price'] : null;
+$qty = isset($_POST['quantity']) ? $_POST['quantity'] : 1;
+
+$user_or_guest = isset($_SESSION['user']) ? $_SESSION['user'] : 'guest_' . session_id();
+
+// Ensure all required arguments are passed
+
+
 if (isset($_SESSION['user'])) {
   $count = $get_data->count_Cart($_SESSION['user']);
 }else{
@@ -119,13 +131,13 @@ img {
 						$additional_images = $get_data->get_additional_images($pro['id_pro']);
 					?>
 	    			<div class="col-lg-6 mb-5 ftco-animate">
-                    <a id="main-image-link" href="../Admin/upload/<?php echo $pro['image'] ?>" class="image-popup">
-                        <img id="main-image" class="img-fluid main-image" src="../Admin/upload/<?php echo $pro['image'] ?>" alt="<?php echo $pro['name_pro'] ?>">
+                    <a id="main-image-link" href="Admin/upload/<?php echo $pro['image'] ?>" class="image-popup">
+                        <img id="main-image" class="img-fluid main-image" src="Admin/upload/<?php echo $pro['image'] ?>" alt="<?php echo $pro['name_pro'] ?>">
                     </a>
                     <div class="additional-images mt-2 d-flex ">
                         <?php $category = $pro['category'];
 						 foreach ($additional_images as $image) { ?>
-                            <img src="../Admin/upload/<?php echo $image; ?>" alt="<?php echo $pro['name_pro'] ?>" class="img-thumbnail" style="width: 100px; height: 100px; margin-right: 5px;" onclick="swapImages(this);">
+                            <img src="Admin/upload/<?php echo $image; ?>" alt="<?php echo $pro['name_pro'] ?>" class="img-thumbnail" style="width: 100px; height: 100px; margin-right: 5px;" onclick="swapImages(this);">
                         <?php } ?>
                     </div>
                 </div>
@@ -272,7 +284,7 @@ img {
 						?>
     			<div class="col-md-6 col-lg-3 ftco-animate">
     				<div class="product">
-    					<a href="product-single.php?id_pro=<?php echo $pro['id_pro'] ?>" class="img-prod"><img class="img-fluid" src="../Admin/upload/<?php echo $pro['image'] ?>  " alt="<?php echo $pro['name_pro'] ?>">
+    					<a href="product-single.php?id_pro=<?php echo $pro['id_pro'] ?>" class="img-prod"><img class="img-fluid" src="Admin/upload/<?php echo $pro['image'] ?>  " alt="<?php echo $pro['name_pro'] ?>">
     					<p class="price"><?php if (isset($pro['price_sale'])) { ?><span class="status"><?php echo round((100 * ($pro['price'] - $pro['price_sale'])) / $pro['price']); ?>%</span>	<?php } ?>
               <div class="overlay"></div>
     					</a>

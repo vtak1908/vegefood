@@ -151,7 +151,7 @@ if (isset($_SESSION['user'])) {
               ?>
     			<div class="col-md-6 col-lg-3 ftco-animate">
     				<div class="product">
-    					<a href="product-single.php?id_pro=<?php echo $pro['id_pro'] ?>" class="img-prod"><img  class="img-fluid" src="../Admin/upload/<?php echo $pro['image'] ?>  " alt="<?php echo $pro['name_pro'] ?>">
+    					<a href="product-single.php?id_pro=<?php echo $pro['id_pro'] ?>" class="img-prod"><img  class="img-fluid" src="Admin/upload/<?php echo $pro['image'] ?>  " alt="<?php echo $pro['name_pro'] ?>">
     					<p class="price"><?php if (isset($pro['price_sale'])) { ?><span class="status"><?php echo round((100 * ($pro['price'] - $pro['price_sale'])) / $pro['price']) ?>%</span>	<?php } ?>
               <div class="overlay"></div>
     					</a>
@@ -189,7 +189,7 @@ if (isset($_SESSION['user'])) {
               ?>
               <div class="col-md-6 col-lg-3 ftco-animate">
     				<div class="product">
-    					<a href="product-single.php?id_pro=<?php echo $pro['id_pro'] ?>" class="img-prod"><img class="img-fluid" src="../Admin/upload/<?php echo $pro['image'] ?>  " alt="<?php echo $pro['name_pro'] ?>">
+    					<a href="product-single.php?id_pro=<?php echo $pro['id_pro'] ?>" class="img-prod"><img class="img-fluid" src="Admin/upload/<?php echo $pro['image'] ?>  " alt="<?php echo $pro['name_pro'] ?>">
     					<p class="price"><?php if (isset($pro['price_sale'])) { ?><span class="status"><?php echo round((100 * ($pro['price'] - $pro['price_sale'])) / $pro['price']) ?>%</span>	<?php } ?>
               <div class="overlay"></div>
     					</a>

@@ -259,7 +259,7 @@ if (isset($_GET['plus'])) {
 						      <tr class="text-center">
 						        <td class="product-remove"><a href="cart.php?del=<?php echo $se_cart['id_pro'] ?>"><span class="bi bi-trash">x</span></a></td>
 						        
-						        <td class="image-prod"><div class="img" style="background-image: url('../Admin/upload/<?php echo ($se_cart['picture']); ?>');"></div></td>
+						        <td class="image-prod"><div class="img" style="background-image: url('Admin/upload/<?php echo ($se_cart['picture']); ?>');"></div></td>
 						        
 						        <td class="product-name">
 						        	<h3><?php echo $se_cart['name_pro'] ?></h3>
@@ -290,7 +290,7 @@ if (isset($_GET['plus'])) {
 						      <tr class="text-center">
 						        <td class="product-remove"><a href="cart.php?del=<?php echo $se_cart['id_pro'] ?>"><span class="bi bi-trash">x</span></a></td>
 						        
-						        <td class="image-prod"><div class="img" style="background-image: url('../Admin/upload/<?php echo ($se_cart['picture']); ?>');"></div></td>
+						        <td class="image-prod"><div class="img" style="background-image: url('Admin/upload/<?php echo ($se_cart['picture']); ?>');"></div></td>
 						        
 						        <td class="product-name">
 						        	<h3><?php echo $se_cart['name'] ?></h3>

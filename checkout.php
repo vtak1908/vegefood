@@ -1,17 +1,27 @@
 <?php
 session_start();
-            include("control.php");
-          $get_data = new data_user();
+include("control.php");
+$get_data = new data_user();
+
+// Giỏ hàng
+$count = isset($_SESSION['user']) ? $get_data->count_Cart($_SESSION['user']) : (isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0);
+
+// Tính toán giỏ hàng
+$subTotal = 0;
 if (isset($_SESSION['user'])) {
-  $count = $get_data->count_Cart($_SESSION['user']);
-}else{
-  if(isset($_SESSION['cart'])){
-    $count = count($_SESSION['cart']);
-  }else{
-    $count = '0';
-  }
+    $select_cart = $get_data->select_Cart($_SESSION['user']);
+    foreach ($select_cart as $item) {
+        $subTotal += $item['total'];
+    }
+} elseif (isset($_SESSION['cart'])) {
+    foreach ($_SESSION['cart'] as $item) {
+        $subTotal += $item['total'];
+    }
 }
- ?>
+$Discount = 30000;
+$total = $subTotal + $Discount;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -112,7 +122,7 @@ if (isset($_SESSION['user'])) {
                         <?php 
                         $select_add = $get_data->select_address($_SESSION['user']);
                         foreach($select_add as $se_add): ?>
-                            <option value="<?php echo $se_add['id_address']; ?>" data-name="<?php echo $se_add['name_custommer']; ?>" data-phone="<?php echo $se_add['phone']; ?>" data-address="<?php echo $se_add['address']; ?>">
+                            <option value="<?php echo $se_add['address']; ?>" data-name="<?php echo $se_add['name_custommer']; ?>" data-phone="<?php echo $se_add['phone']; ?>" data-address="<?php echo $se_add['address']; ?>">
                                 <?php echo $se_add['address']; ?>
                             </option>
                         <?php endforeach; ?>
@@ -120,24 +130,24 @@ if (isset($_SESSION['user'])) {
                 </div>
                 <div class="form-group">
                     <label>Người nhận</label>
-                    <input type="text" name="txtname" class="form-control" id="nguoiNhan" readonly>
+                    <input type="text" name="txtname" class="form-control" id="nguoiNhan" >
                 </div>
                 <div class="form-group">
                     <label>Số điện thoại</label>
-                    <input type="text" name="txtPhone" class="form-control" id="sdtNguoiNhan" readonly>
+                    <input type="text" name="txtPhone" class="form-control" id="sdtNguoiNhan" >
                 </div>
                 <?php }else{ ?>
                   <div class="form-group">
                     <label>Địa chỉ nhận hàng</label>
-                    <input type="text" name="diachi" class="form-control" >
+                    <input type="text" name="diachi" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label>Người nhận</label>
-                    <input type="text" name="txtname" class="form-control" >
+                    <input type="text" name="txtname" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label>Số điện thoại</label>
-                    <input type="text" name="txtPhone" class="form-control">
+                    <input type="text" name="txtPhone" class="form-control"required>
                 </div>
                 <?php } ?>
                 </div>
@@ -146,18 +156,28 @@ if (isset($_SESSION['user'])) {
                   <h3 class="billing-heading mb-4">Phương thức thanh toán</h3>
                   <div class="form-group">
                     <div class="col-md-6">
-                      <div class="radio">
-                        <label><input type="radio" name="optradio" value="Chuyển khoản qua ngân hàng" class="mr-2">Chuyển khoản qua ngân hàng</label>
-                      </div>
+            <!-- Giả sử người dùng đã điền thông tin form đầy đủ phía trên -->
+
+<!-- Hidden input để đẩy dữ liệu đi -->
+<input type="hidden" name="tongtien" value="<?= $total ?>">
+<input type="hidden" name="nguoiNhan" value="" id="inputNguoiNhanHidden">
+<input type="hidden" name="sdt" value="" id="inputSdtHidden">
+<input type="hidden" name="diachi" value="" id="inputDiachiHidden">
+
+
+<button type="submit" formaction="process_checkout.php" class="btn btn-primary">Thanh toán MOMO</button>
+
                     </div>
                   </div>
                   <div class="form-group">
                     <div class="col-md-6">
                       <div class="radio">
-                        <label><input type="radio" name="optradio" value="Thanh toán khi nhận hàng" class="mr-2"> Thanh toán khi nhận hàng</label>
+                        <label><input type="radio" name="optradio" value="Thanh toán khi nhận hàng" class="mr-2" > Thanh toán khi nhận hàng</label>
                       </div>
                     </div>
                   </div>
+    
+
 				  <p><input type="submit" name="txtsub" value="Đặt hàng" class="btn btn-primary  py-3 px-4"></p>
                 </div>
               </div>
@@ -176,6 +196,7 @@ if (isset($_SESSION['user'])) {
                   <p class="d-flex">
                     <span>Tổng phụ</span>
                     <span><?php $subTotal = 0;
+                    
                     foreach ($select_cart as $se_cart) {
                       $subTotal = $subTotal + $se_cart['total'];
                     }
@@ -203,7 +224,7 @@ if (isset($_SESSION['user'])) {
 				  <?php
           foreach ($select_cart as $se): ?>
                   <p class="d-flex">
-                    <span><img width="100px" height="100px" src="../Admin/upload/<?php echo $se['picture'] ?>" alt="<?php echo $se['name_pro'] ?>"></span>
+                    <span><img width="100px" height="100px" src="Admin/upload/<?php echo $se['picture'] ?>" alt="<?php echo $se['name_pro'] ?>"></span>
                     <span><?php echo $se['name_pro'] ?><br>
 				<span>Số lượng: <?php echo $se['quantity_order'] ?></span></span>
                   </p>
@@ -241,7 +262,7 @@ if (isset($_SESSION['user'])) {
 				  <?php
           foreach ($_SESSION['cart'] as $se): ?>
                   <p class="d-flex">
-                    <span><img width="100px" height="100px" src="../Admin/upload/<?php echo $se['picture'] ?>" alt="<?php echo $se['name'] ?>"></span>
+                    <span><img width="100px" height="100px" src="Admin/upload/<?php echo $se['picture'] ?>" alt="<?php echo $se['name'] ?>"></span>
                     <span><?php echo $se['name'] ?><br>
 				<span>Số lượng: <?php echo $se['quantity'] ?></span></span>
                   </p>
@@ -374,27 +395,33 @@ if (isset($_SESSION['user'])) {
     <script src="js/scrollax.min.js"></script>
     <script src="js/main.js"></script>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var selectDiachi = document.getElementById('diachi');
-        var inputNguoiNhan = document.getElementById('nguoiNhan');
-        var inputSdtNguoiNhan = document.getElementById('sdtNguoiNhan');
+document.addEventListener('DOMContentLoaded', function() {
+    const diachiSelect = document.getElementById('diachi');
+    const inputName = document.getElementById('nguoiNhan');
+    const inputPhone = document.getElementById('sdtNguoiNhan');
+    const hiddenName = document.getElementById('inputNguoiNhanHidden');
+    const hiddenPhone = document.getElementById('inputSdtHidden');
+    const hiddenDiachi = document.getElementById('inputDiachiHidden');
 
-        // Hàm cập nhật giá trị của trường "Người nhận" và "Số điện thoại người nhận"
-        function updateFields() {
-            var selectedOption = selectDiachi.options[selectDiachi.selectedIndex];
-            var name = selectedOption.getAttribute('data-name');
-            var phone = selectedOption.getAttribute('data-phone');
-            inputNguoiNhan.value = name;
-            inputSdtNguoiNhan.value = phone;
-        }
+    const form = document.querySelector('form.billing-form');
 
-        // Cập nhật trường "Người nhận" và "Số điện thoại người nhận" khi trang được tải
-        updateFields();
+    function syncFields() {
+        const selected = diachiSelect.options[diachiSelect.selectedIndex];
+        inputName.value = selected.getAttribute('data-name');
+        inputPhone.value = selected.getAttribute('data-phone');
+        hiddenName.value = inputName.value;
+        hiddenPhone.value = inputPhone.value;
+        hiddenDiachi.value = selected.value;
+    }
 
-        // Cập nhật trường "Người nhận" và "Số điện thoại người nhận" khi lựa chọn thay đổi
-        selectDiachi.addEventListener('change', updateFields);
-    });
+    diachiSelect.addEventListener('change', syncFields);
+    form.addEventListener('submit', syncFields);
+
+    syncFields(); // tự động chạy 1 lần
+});
 </script>
+
+
 
 
   </body>
