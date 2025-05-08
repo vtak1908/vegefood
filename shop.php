@@ -44,7 +44,26 @@ if (isset($_SESSION['user'])) {
     height: 100%;
     object-fit: cover;
 }
+.search-bar {
+    margin-bottom: 20px;
+    text-align: center;
+}
 
+.search-bar input {
+    max-width: 400px;
+    width: 100%;
+    padding: 10px 15px;
+    border: 2px solid #82ae46; /* Green border */
+    border-radius: 25px; /* Rounded corners */
+    font-size: 16px;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.search-bar input:focus {
+    border-color: #82ae46; /* Darker green on focus */
+    box-shadow: 0 0 10px rgba(33, 136, 56, 0.5); /* Subtle glow effect */
+}
     </style>
     <title>Vegefoods</title>
     <meta charset="utf-8">
@@ -143,20 +162,26 @@ if (isset($_SESSION['user'])) {
 </ul>
     			</div>
     		</div>
+        <!-- filepath: c:\xampp\htdocs\vegefood\shop.php -->
+<div class="search-bar mb-4 text-center">
+    <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm sản phẩm..." style="max-width: 400px; margin: auto;">
+</div>
     		<div class="row">
           <?php 
           if (!isset($_GET["cat"])) {
             $select_pro = $get_data->select_product();
             foreach ($select_pro as $pro) {
               ?>
-    			<div class="col-md-6 col-lg-3 ftco-animate">
+    			<div class="col-md-6 col-lg-3 ftco-animate product-item">
     				<div class="product">
     					<a href="product-single.php?id_pro=<?php echo $pro['id_pro'] ?>" class="img-prod"><img  class="img-fluid" src="Admin/upload/<?php echo $pro['image'] ?>  " alt="<?php echo $pro['name_pro'] ?>">
     					<p class="price"><?php if (isset($pro['price_sale'])) { ?><span class="status"><?php echo round((100 * ($pro['price'] - $pro['price_sale'])) / $pro['price']) ?>%</span>	<?php } ?>
               <div class="overlay"></div>
     					</a>
     					<div class="text py-3 pb-4 px-3 text-center">
-    						<h3><a href="product-single.php?id_pro=<?php echo $pro['id_pro'] ?>"><?php echo $pro['name_pro'] ?></a></h3>
+              <h3 class="product-name">
+                <a href="product-single.php?id_pro=<?php echo $pro['id_pro'] ?>"><?php echo $pro['name_pro'] ?></a>
+            </h3>
     						<div class="d-flex">
     							<div class="pricing">
 		    						<p class="price"><?php if (isset($pro['price_sale'])) { ?><span class="mr-2 price-dc"><?php $price_sale = $pro['price'];
@@ -187,14 +212,16 @@ if (isset($_SESSION['user'])) {
             $select_pro = $get_data->select_product_cat($_GET['cat']);
             foreach ($select_pro as $pro) {
               ?>
-              <div class="col-md-6 col-lg-3 ftco-animate">
+              <div class="col-md-6 col-lg-3 ftco-animate product-item">
     				<div class="product">
     					<a href="product-single.php?id_pro=<?php echo $pro['id_pro'] ?>" class="img-prod"><img class="img-fluid" src="Admin/upload/<?php echo $pro['image'] ?>  " alt="<?php echo $pro['name_pro'] ?>">
     					<p class="price"><?php if (isset($pro['price_sale'])) { ?><span class="status"><?php echo round((100 * ($pro['price'] - $pro['price_sale'])) / $pro['price']) ?>%</span>	<?php } ?>
               <div class="overlay"></div>
     					</a>
     					<div class="text py-3 pb-4 px-3 text-center">
-    						<h3><a href="product-single.php?id_pro=<?php echo $pro['id_pro'] ?>"><?php echo $pro['name_pro'] ?></a></h3>
+              <h3 class="product-name">
+                <a href="product-single.php?id_pro=<?php echo $pro['id_pro'] ?>"><?php echo $pro['name_pro'] ?></a>
+            </h3>
     						<div class="d-flex">
     							<div class="pricing">
 		    						<p class="price"><?php if (isset($pro['price_sale'])) { ?><span class="mr-2 price-dc"><?php $price_sale = $pro['price'];
@@ -295,7 +322,21 @@ if (isset($_SESSION['user'])) {
   <!-- loader -->
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
+  <script>
+    document.getElementById('searchInput').addEventListener('keyup', function () {
+        const searchValue = this.value.toLowerCase();
+        const products = document.querySelectorAll('.product-item');
 
+        products.forEach(product => {
+            const productName = product.querySelector('.product-name').textContent.toLowerCase();
+            if (productName.includes(searchValue)) {
+                product.style.display = 'block';
+            } else {
+                product.style.display = 'none';
+            }
+        });
+    });
+</script>
   <script src="js/jquery.min.js"></script>
   <script src="js/jquery-migrate-3.0.1.min.js"></script>
   <script src="js/popper.min.js"></script>
