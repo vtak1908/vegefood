@@ -218,7 +218,24 @@ class data_user
                 VALUES ('$user', '$id_pro', '$name', '$price', '$picture', '$qty', '$total')";
         return mysqli_query($conn, $sql);
     }
-    
+
+public function select_order_by_id($orderId) {
+    global $conn;
+    $sql = "SELECT * FROM order_pro WHERE id_order = '$orderId'";
+    $run = mysqli_query($conn, $sql);
+    return $run;
+}
+
+public function select_order_details($orderId) {
+    global $conn;
+    $sql = "SELECT * FROM order_detail WHERE id_order = '$orderId'";
+    $run = mysqli_query($conn, $sql);
+    $details = [];
+    while ($row = mysqli_fetch_assoc($run)) {
+        $details[] = $row;
+    }
+    return $details;
+}
     
 }
 ?>

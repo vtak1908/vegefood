@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 include("control.php");
 $get_data = new data_user();
@@ -42,7 +43,8 @@ if ($insert) {
     }
 
     unset($_SESSION['momo_payment']);
-    echo "<script>alert('Thanh toán MoMo thành công'); window.location='shop.php';</script>";
+    header("Location: invoice.php?order_id=$insert");
+    exit;
 } else {
     echo "Lỗi khi lưu đơn hàng.";
 }

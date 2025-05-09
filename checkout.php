@@ -295,8 +295,8 @@ $total = $subTotal + $Discount;
         }
         if ($insert_order) {
           $delete = $get_data->delete_All_Cart($_SESSION['user']);
-          echo "<script>alert('Đặt hàng thành công');
-					window.location=('shop.php')</script>";
+        echo "<script>alert('Đặt hàng thành công');
+              window.location=('invoice.php?order_id=$insert')</script>";
         }
       }else{
         foreach ($_SESSION['cart'] as $se) {
@@ -304,8 +304,8 @@ $total = $subTotal + $Discount;
         }
         if ($insert_order) {
           session_destroy();
-          echo "<script>alert('Đặt hàng thành công');
-					window.location=('shop.php')</script>";
+           echo "<script>alert('Đặt hàng thành công');
+              window.location=('invoice.php?order_id=$insert')</script>";
         }
       }
 		} else {
