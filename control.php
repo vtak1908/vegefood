@@ -236,6 +236,16 @@ public function select_order_details($orderId) {
     }
     return $details;
 }
-    
+    public function getAllOrdersByUser($username) {
+    global $conn;
+    $sql = "SELECT * FROM tbl_order WHERE username = '$username' ORDER BY id_order DESC";
+    $run = mysqli_query($conn, $sql);
+    $result = [];
+    while ($row = mysqli_fetch_assoc($run)) {
+        $result[] = $row;
+    }
+    return $result;
+}
+
 }
 ?>

@@ -11,6 +11,9 @@ if (isset($_SESSION['user'])) {
     $count = '0';
   }
 }
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -250,33 +253,33 @@ if (isset($_SESSION['user'])) {
                     <?php } ?>
 						</div>
             <div class="pb-md-12">
-                <h3>Danh sách đơn hàng</h3>
-                <table >
-                    <thead>
-                        <tr>
-                            <th>Mã đơn hàng</th>
-                            <th>Ngày đặt</th>
-                            <th>Thành tiền</th>
-                            <th>Phương thức thanh toán</th>
-                            <th>Trạng thái</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      <?php $select_or = $get_data->select_order($_SESSION['user']);
-                      foreach( $select_or as $se_or ): ?>
-                        <tr>
-                            <td><a href="#">#<?php echo $se_or['id_order'] ?></a></td>
-                            <td><?php echo $se_or['date'] ?></td>
-                            <td><?php $price_sale = $se_or['total_order'];
-                            $formatted_price = number_format($price_sale, 0, ',', '.'); 
-                            echo $formatted_price . ' ₫'; ?></td>
-                            <td><?php echo $se_or['payment'] ?></td>
-                            <td><?php echo $se_or['status'] ?></td>
-                        </tr>
-                      <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
+    <h3>Danh sách đơn hàng</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Mã đơn hàng</th>
+                <th>Ngày đặt</th>
+                <th>Thành tiền</th>
+                <th>Phương thức thanh toán</th>
+                <th>Trạng thái</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php 
+        $donhang = $get_data->select_order($_SESSION['user']);
+        foreach ($donhang as $order): ?>
+            <tr>
+                <td><a href="invoice.php?order_id=<?= $order['id_order'] ?>">#<?= $order['id_order'] ?></a></td>
+                <td><?= $order['date'] ?></td>
+                <td><?= number_format($order['total_order'], 0, ',', '.') ?> ₫</td>
+                <td><?= $order['payment'] ?></td>
+                <td><?= $order['status'] ?></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+
             <?php  } ?>
         </div>
 					</div>
