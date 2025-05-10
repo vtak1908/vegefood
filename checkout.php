@@ -179,7 +179,15 @@ $total = $subTotal + $Discount;
       <?php endforeach; ?>
     </select>
   </div>
-
+<!-- Hiển thị tên và số điện thoại -->
+<div class="form-group">
+    <label>Người nhận</label>
+    <input type="text" id="nguoiNhanDisplay" class="form-control" readonly>
+</div>
+<div class="form-group">
+    <label>Số điện thoại</label>
+    <input type="text" id="sdtDisplay" class="form-control" readonly>
+</div>
   <!-- Các hidden field dùng để POST -->
   <input type="hidden" name="diachi" id="diachiHidden">
   <input type="hidden" name="txtname" id="nguoiNhanHidden">
@@ -412,23 +420,33 @@ $total = $subTotal + $Discount;
     <script>
 document.addEventListener('DOMContentLoaded', function() {
   const diachiSelect = document.getElementById('diachi');
+  const nameDisplay = document.getElementById('nguoiNhanDisplay');
+  const phoneDisplay = document.getElementById('sdtDisplay');
   const nameHidden = document.getElementById('nguoiNhanHidden');
   const phoneHidden = document.getElementById('sdtHidden');
   const diachiHidden = document.getElementById('diachiHidden');
 
-  if (diachiSelect && nameHidden && phoneHidden && diachiHidden) {
+  if (diachiSelect && nameDisplay && phoneDisplay && nameHidden && phoneHidden && diachiHidden) {
     const syncFields = () => {
       const selected = diachiSelect.options[diachiSelect.selectedIndex];
-      nameHidden.value = selected.getAttribute('data-name');
-      phoneHidden.value = selected.getAttribute('data-phone');
-      diachiHidden.value = selected.value;
+      const name = selected.getAttribute('data-name');
+      const phone = selected.getAttribute('data-phone');
+      const address = selected.value;
+
+      // Cập nhật các trường hiển thị
+      nameDisplay.value = name || '';
+      phoneDisplay.value = phone || '';
+
+      // Cập nhật các trường ẩn
+      nameHidden.value = name || '';
+      phoneHidden.value = phone || '';
+      diachiHidden.value = address || '';
     };
 
     diachiSelect.addEventListener('change', syncFields);
-    syncFields(); // auto chạy lần đầu
+    syncFields(); // Đồng bộ dữ liệu ngay khi trang được tải
   }
 });
-
 </script>
 
 
