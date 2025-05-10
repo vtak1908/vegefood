@@ -104,17 +104,17 @@ if (isset($_SESSION['user'])) {
           <div class="w-100"></div>
           <div class="col-md-3 d-flex">
           	<div class="info bg-white p-4">
-	            <p><span>Địa chỉ:</span> 220 Minh Khai, Hai Bà Trưng, Hà Nội, Việt Nam</p>
+	            <p><span>Địa chỉ:</span> 228 Minh Khai, Hai Bà Trưng, Hà Nội, Việt Nam</p>
 	          </div>
           </div>
           <div class="col-md-3 d-flex">
           	<div class="info bg-white p-4">
-	            <p><span>Số điện thoại:</span> <a href="tel://1234567920">038 6828966</a></p>
+	            <p><span>Số điện thoại:</span> <a href="tel://1234567920">0943845536</a></p>
 	          </div>
           </div>
           <div class="col-md-3 d-flex">
           	<div class="info bg-white p-4">
-	            <p><span>Email:</span> <a href="mailto:info@yoursite.com">qbk@gamil.com</a></p>
+	            <p><span>Email:</span> <a href="mailto:info@yoursite.com">vukiet252@gmail.com</a></p>
 	          </div>
           </div>
           <div class="col-md-3 d-flex">
@@ -216,7 +216,7 @@ if (isset($_SESSION['user'])) {
             	<div class="block-23 mb-3">
 	              <ul>
 	                <li><span class="icon icon-map-marker"></span><span class="text">218, Minh Khai, Hai Bà Trưng, Hà Nội</span></li>
-	                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+0369852147</span></a></li>
+	                <li><a href="#"><span class="icon icon-phone"></span><span class="text">0943845536</span></a></li>
 	                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">vukiet252@gmail.com</span></a></li>
 	              </ul>
 	            </div>
