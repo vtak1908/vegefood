@@ -27,7 +27,7 @@ $total = $subTotal + $Discount;
     $phone   = $_POST['txtPhone'];
     $address = $_POST['diachi'];
     $pay     = $_POST['optradio'];
-    $status  = "Chờ";
+    $status  = "Đang chuẩn bị";
 
     if ($pay == "Thanh toán khi nhận hàng") {
         // COD

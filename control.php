@@ -247,5 +247,13 @@ public function select_order_details($orderId) {
     return $result;
 }
 
+public function update_order_status($order_id, $status) {
+    global $conn;
+    $sql = "UPDATE order_pro SET status = ? WHERE id_order = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("si", $status, $order_id);
+    return $stmt->execute();
+}
+
 }
 ?>

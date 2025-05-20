@@ -15,7 +15,7 @@ $sdt     = $payment['sdt'];
 $diachi  = $payment['diachi'];
 $total   = (int)$payment['tongtien'];
 $pay     = "Thanh toán MoMo";
-$status  = "Đã thanh toán";
+$status  = "Đang chuẩn bị";
 
 if (isset($_SESSION['user'])) {
     $insert = $get_data->insert_Order($_SESSION['user'], $name, $sdt, $diachi, $total, $pay, $status);

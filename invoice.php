@@ -1,14 +1,25 @@
 <?php
-
 session_start();
 include("control.php");
 $get_data = new data_user();
 
-// Kiểm tra nếu có thông tin đơn hàng
 $orderId = $_GET['order_id'] ?? null;
 if (!$orderId) {
     echo "Không tìm thấy thông tin hóa đơn.";
     exit;
+}
+
+// Xử lý huỷ đơn hàng
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
+    $order = mysqli_fetch_assoc($get_data->select_order_by_id($orderId));
+    if ($order['status'] == 'Đang chuẩn bị') {
+        $get_data->update_order_status($orderId, 'Đã huỷ');
+        echo "<script>alert('Đã huỷ đơn hàng thành công!');window.location='invoice.php?order_id=$orderId';</script>";
+        exit;
+    } elseif ($order['status'] == 'Đang vận chuyển') {
+        echo "<script>alert('Không thể huỷ đơn hàng khi đang vận chuyển!');window.location='invoice.php?order_id=$orderId';</script>";
+        exit;
+    }
 }
 
 // Lấy thông tin đơn hàng
@@ -20,6 +31,7 @@ if (!$order) {
 
 // Lấy chi tiết đơn hàng
 $orderDetails = $get_data->select_order_details($orderId);
+
 ?>
 
 <!DOCTYPE html>
@@ -108,6 +120,13 @@ $orderDetails = $get_data->select_order_details($orderId);
             <hr>
             <div class="text-center">
                 <a href="shop.php" class="btn btn-primary">Tiếp tục mua sắm</a>
+                <?php if ($order['status'] == 'Đang chuẩn bị' || $order['status'] == 'Đang vận chuyển'): ?>
+                    <form method="post" action="" style="display:inline;">
+                        <input type="hidden" name="cancel_order" value="1">
+                        <button type="submit" class="btn btn-danger"
+                            onclick="return confirm('Bạn chắc chắn muốn huỷ đơn hàng này?');">Huỷ đơn hàng</button>
+                    </form>
+                <?php endif; ?>
             </div>
         </div>
     </div>
