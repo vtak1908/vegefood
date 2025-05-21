@@ -296,14 +296,14 @@ if (empty($_SESSION['user'])) {
                 <div class="card">
                   <div class="card-header">
                     <div class="d-flex align-items-center">
-                      <h4 class="card-title">Danh mục hàng</h4>
+                      <h4 class="card-title">Danh mục loại sản phẩm</h4>
                       <button
                         class="btn btn-primary btn-round ms-auto"
                         data-bs-toggle="modal"
                         data-bs-target="#addRowModal"
                       >
                         <i class="fa fa-plus"></i>
-                        Thêm danh mục hàng
+                        Thêm danh mục loại sản phẩm
                       </button>
                     </div>
                   </div>
@@ -315,7 +315,7 @@ if (empty($_SESSION['user'])) {
                 <div class="modal-header border-0">
                     <h5 class="modal-title">
                         <span class="fw-mediumbold"> Thêm</span>
-                        <span class="fw-light"> Danh mục hàng </span>
+                        <span class="fw-light"> Danh mục loại sản phẩm </span>
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -327,7 +327,7 @@ if (empty($_SESSION['user'])) {
                             <div class="col-sm-12">
                                 <div class="form-group form-group-default">
                                     <label>Tên danh mục</label>
-                                    <input name="txtname" type="text" class="form-control" placeholder="name" required />
+                                    <input name="txtname" type="text" class="form-control"  required />
                                 </div>
                             </div>
                             <div class="col-sm-12">

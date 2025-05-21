@@ -307,11 +307,10 @@ if (empty($_SESSION['user'])) {
                     <div class="mb-3">
                         <label for="status" class="form-label">Trạng thái</label>
                         <select class="form-control" id="status" name="status" required>
-                        <option value="Chờ">Chờ</option>
-                        <option value="Đang xử lý">Đang xử lý</option>
+                        <option value="Chờ">Đang chuẩn bị</option>
                         <option value="Đang vận chuyển">Đang vận chuyển</option>
                         <option value="Hoàn thành">Hoàn thành</option>
-                        <option value="Hủy">Hủy</option>
+                        <option value="Hủy">Hủy bởi cửa hàng</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Cập nhật</button>

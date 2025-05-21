@@ -255,5 +255,13 @@ public function update_order_status($order_id, $status) {
     return $stmt->execute();
 }
 
+public function update_momo_trans_id($order_id, $transId) {
+    global $conn;
+    $sql = "UPDATE order_pro SET momo_trans_id = ? WHERE id_order = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("si", $transId, $order_id);
+    return $stmt->execute();
+}
+
 }
 ?>

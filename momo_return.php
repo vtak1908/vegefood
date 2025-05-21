@@ -25,6 +25,8 @@ if (isset($_SESSION['user'])) {
     $cart   = $_SESSION['cart'] ?? [];
 }
 
+$transId = $_GET['transId'] ?? null; // Lấy transactionId từ MoMo trả về
+
 if ($insert) {
     foreach ($cart as $item) {
         $get_data->insert_Order_Detail(
@@ -34,6 +36,11 @@ if ($insert) {
             $item['quantity_order'] ?? $item['quantity'],
             $item['total']
         );
+    }
+
+    // Cập nhật momo_trans_id vào đơn hàng
+    if ($transId) {
+        $get_data->update_momo_trans_id($insert, $transId); // Bạn cần tạo hàm này trong class data_user
     }
 
     if (isset($_SESSION['user'])) {

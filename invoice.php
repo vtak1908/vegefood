@@ -13,6 +13,14 @@ if (!$orderId) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
     $order = mysqli_fetch_assoc($get_data->select_order_by_id($orderId));
     if ($order['status'] == 'Đang chuẩn bị') {
+        // Nếu thanh toán bằng MoMo thì hoàn tiền
+        if ($order['payment'] == 'Thanh toán MoMo' || $order['payment'] == 'Thanh toán MOMO') {
+            // Gọi hàm hoàn tiền MoMo
+            $refundResult = momo_refund($order);
+            if ($refundResult !== true) {
+                die("Hoàn tiền MoMo thất bại: $refundResult");
+            }
+        }
         $get_data->update_order_status($orderId, 'Đã huỷ');
         echo "<script>alert('Đã huỷ đơn hàng thành công!');window.location='invoice.php?order_id=$orderId';</script>";
         exit;
@@ -132,3 +140,54 @@ $orderDetails = $get_data->select_order_details($orderId);
     </div>
 </body>
 </html>
+
+<?php
+function momo_refund($order) {
+    $endpoint    = "https://test-payment.momo.vn/v2/gateway/api/refund";
+    $partnerCode = 'MOMO';
+    $accessKey   = 'F8BBA842ECF85';
+    $secretKey   = 'K951B6PE1waDMi640xX08PD3vg6EkVlz';
+    $requestId   = (string)(time() . rand(1000,9999));
+    $refundOrderId = "refund_{$order['id_order']}_" . time();
+    $amount      = (string)(int)$order['total_order'];
+    $transId     = (string)($order['momo_trans_id'] ?? '');
+    $description = "Hoàn tiền đơn hàng {$order['id_order']} cho khách {$order['name_customer']}";
+
+    if (!$transId) return "Không tìm thấy transactionId MoMo để hoàn tiền.";
+
+    $rawHash = "accessKey=$accessKey"
+        . "&amount=$amount"
+        . "&description=$description"
+        . "&orderId=$refundOrderId"
+        . "&partnerCode=$partnerCode"
+        . "&requestId=$requestId"
+        . "&transId=$transId";
+    $signature = hash_hmac("sha256", $rawHash, $secretKey);
+
+    $data = [
+        'partnerCode' => $partnerCode,
+        'accessKey'   => $accessKey,
+        'requestId'   => $requestId,
+        'amount'      => $amount,
+        'orderId'     => $refundOrderId,
+        'transId'     => $transId,
+        'lang'        => 'vi',
+        'description' => $description,
+        'signature'   => $signature,
+        'requestType' => "refundMoMoWallet"
+    ];
+
+    $ch = curl_init($endpoint);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    $result = json_decode($response, true);
+    if (isset($result['resultCode']) && $result['resultCode'] == 0) {
+        return true;
+    } else {
+        return "Chi tiết lỗi MoMo: " . htmlspecialchars($response);
+    }
+}
