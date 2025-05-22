@@ -58,13 +58,8 @@ if (empty($_SESSION['user'])) {
         <div class="sidebar-logo">
           <!-- Logo Header -->
           <div class="logo-header" data-background-color="dark">
-            <a href="index.php" class="logo">
-              <img
-                src="assets/img/kaiadmin/logo_light.svg"
-                alt="navbar brand"
-                class="navbar-brand"
-                height="20"
-              />
+             <a href="index.php" >
+              Quản trị
             </a>
             <div class="nav-toggle">
               <button class="btn btn-toggle toggle-sidebar">
@@ -307,10 +302,10 @@ if (empty($_SESSION['user'])) {
                     <div class="mb-3">
                         <label for="status" class="form-label">Trạng thái</label>
                         <select class="form-control" id="status" name="status" required>
-                        <option value="Chờ">Đang chuẩn bị</option>
+                        <option value="Đang chuẩn bị">Đang chuẩn bị</option>
                         <option value="Đang vận chuyển">Đang vận chuyển</option>
                         <option value="Hoàn thành">Hoàn thành</option>
-                        <option value="Hủy">Hủy bởi cửa hàng</option>
+                        <option value="Hủy bởi cửa hàng">Hủy bởi cửa hàng</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Cập nhật</button>

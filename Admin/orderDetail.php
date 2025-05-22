@@ -57,13 +57,8 @@ if (empty($_SESSION['user'])) {
         <div class="sidebar-logo">
           <!-- Logo Header -->
           <div class="logo-header" data-background-color="dark">
-            <a href="index.php" class="logo">
-              <img
-                src="assets/img/kaiadmin/logo_light.svg"
-                alt="navbar brand"
-                class="navbar-brand"
-                height="20"
-              />
+             <a href="index.php" >
+              Quản trị
             </a>
             <div class="nav-toggle">
               <button class="btn btn-toggle toggle-sidebar">
