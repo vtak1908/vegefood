@@ -80,6 +80,65 @@ $orderDetails = $get_data->select_order_details($orderId);
             background-color: #218838;
             border-color: #1e7e34;
         }
+ 
+    body {
+        background: #f2f2f2;
+        font-size: 16px;
+    }
+    .invoice-container {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .invoice-header h1 {
+        font-size: 2rem;
+    }
+
+    .table th, .table td {
+        font-size: 14px;
+        padding: 8px;
+        text-align: center;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    @media (max-width: 768px) {
+        .row {
+            flex-direction: column;
+        }
+
+        .col-md-6 {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+        }
+
+        .invoice-header h1 {
+            font-size: 1.75rem;
+        }
+
+        .btn {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .text-right {
+            text-align: left !important;
+        }
+    }
+
+
     </style>
 </head>
 <body>
@@ -104,7 +163,9 @@ $orderDetails = $get_data->select_order_details($orderId);
             <p><strong>Trạng thái:</strong> <?= $order['status'] ?></p>
             <hr>
             <h3>Chi tiết đơn hàng</h3>
-            <table class="table table-bordered">
+         <div class="table-responsive">
+<table class="table table-bordered">
+
                 <thead class="thead-light">
                     <tr>
                         <th>Sản phẩm</th>
@@ -124,18 +185,24 @@ $orderDetails = $get_data->select_order_details($orderId);
                     <?php endforeach; ?>
                 </tbody>
             </table>
-            <h4 class="text-right">Tổng cộng: <?= number_format($order['total_order'], 0, ',', '.') ?> ₫</h4>
+            </table>
+</div>
+
+            <h4 class="text-right">Phí vận chuyển: <?= number_format(30000, 0, ',', '.') ?> ₫</h4>
+<h4 class="text-right">Tổng cộng: <?= number_format($order['total_order'], 0, ',', '.') ?> ₫</h4>
+
             <hr>
-            <div class="text-center">
-                <a href="shop.php" class="btn btn-primary">Tiếp tục mua sắm</a>
-                <?php if ($order['status'] == 'Đang chuẩn bị' || $order['status'] == 'Đang vận chuyển'): ?>
-                    <form method="post" action="" style="display:inline;">
-                        <input type="hidden" name="cancel_order" value="1">
-                        <button type="submit" class="btn btn-danger"
-                            onclick="return confirm('Bạn chắc chắn muốn huỷ đơn hàng này?');">Huỷ đơn hàng</button>
-                    </form>
-                <?php endif; ?>
-            </div>
+            <div class="text-center d-flex flex-column flex-md-row justify-content-center align-items-center gap-2">
+    <a href="shop.php" class="btn btn-primary">Tiếp tục mua sắm</a>
+    <?php if ($order['status'] == 'Đang chuẩn bị' || $order['status'] == 'Đang vận chuyển'): ?>
+        <form method="post" action="" style="display:inline;">
+            <input type="hidden" name="cancel_order" value="1">
+            <button type="submit" class="btn btn-danger"
+                onclick="return confirm('Bạn chắc chắn muốn huỷ đơn hàng này?');">Huỷ đơn hàng</button>
+        </form>
+    <?php endif; ?>
+</div>
+
         </div>
     </div>
 </body>
